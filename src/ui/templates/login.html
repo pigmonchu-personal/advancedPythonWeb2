@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="post" novalidate class="login">
+        {% csrf_token %}
+        <div class="header-form">Private zone access</div>
+        <p class="errorlist">{{ error }}</p>
+        {{ form }}
+        <div>
+            <button>Login</button>
+        </div>
+    </form>
+
+{% endblock %}

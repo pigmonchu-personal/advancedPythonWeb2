@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>dTBlog - Ocurrencias de ducha</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+</head>
+<body>
+    <header class="web-header " href="#top">
+        <div class="logo-grp navigate" id="site-logo" data-href="./">
+            <picture>
+                <source srcset="{% static 'images/logoNombre-111px.png' %} 1x, {% static 'images/logoNombre-222px.png' %} 2x, {% static 'images/logoNombre-333px.png' %} 3x" media="(max-width: 1023px)">
+                <source srcset="{% static 'images/logoCompleto-119px.png' %} 1x, {% static 'images/logoCompleto-238px.png' %} 2x, {% static 'images/logoCompleto-357px.png' %} 3x" media="(min-width: 1024px)">
+                <img class="logo" src="{% static 'images/logoNombre-original.png' %}" alt="logo digestiveThinking">
+            </picture>
+        </div>
+        <div class="buttons-grp">
+            <button class="icon-btn signin navigate" id="signin" data-href="./login"></button>
+            <i class="separator"></i>
+            <button class="icon-btn signup navigate" id="signup" data-href="./signup"></button>
+            <div class="search-grp">
+                <button class="icon-btn search" id="search"></button>
+                <input type="text" class="input-search">
+            </div>
+        </div>
+    </header>
+
+    {% if user.is_authenticated %}
+        {% include "navbarIN.html" %}
+    {% endif %}
+
+    <section class="container articles">
+        {% block content %}{% endblock %}
+    </section>
+
+    <footer class="web-footer">
+        <p class="container">digestiveThinking &copy; 2017 <a href="#top"><i class="fa fa-chevron-up  pull-right" aria-hidden="true"></i></a></p>
+    </footer>
+</body>
+<script src="{% static 'js/main.js' %}"></script>
+</html>
