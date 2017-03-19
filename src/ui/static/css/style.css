@@ -2541,6 +2541,13 @@ input, form button, button, textarea {
   input:focus, form button:focus, button:focus, textarea:focus {
     outline-width: 0; }
 
+input:required, form button:required,
+textarea:required,
+select:required {
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-image: url("../images/required.png"); }
+
 textarea {
   resize: vertical;
   max-height: 159.6px; }
@@ -2562,8 +2569,6 @@ form {
     font-size: 13.2px;
     font-weight: bold;
     text-transform: uppercase; }
-    form label:after {
-      content: ":"; }
   form input, form button, form textarea {
     transition: background-color 0.25s;
     border: 1px solid #8393A7;
@@ -2887,12 +2892,12 @@ form {
     padding: 10px;
     margin: 20px 0; }
 
-.login {
+.login, .signup {
   width: 100%;
   background-color: #f2f2f2;
   margin: 20% auto; }
   @media all and (min-width: 1024px) {
-    .login {
+    .login, .signup {
       width: 60%; } }
 
 /*# sourceMappingURL=style.css.map */
