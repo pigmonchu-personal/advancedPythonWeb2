@@ -17,13 +17,15 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 
-from blogs.api import BlogsAPI
+from blogs.api0 import BlogsAPI
+from blogs.api import BlogViewSet
 from blogs.views import blogs_list, posts_list, posts_username_list, post_complete
 from users.api import UserViewSet
 from users.views import LoginView, SignupView, logout
 
 router = DefaultRouter()
 router.register("users", UserViewSet, base_name="users_api")
+router.register("blogs", BlogViewSet, base_name="blogs_api")
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -40,7 +42,7 @@ urlpatterns = [
     url(r'^logout$', logout, name="logout"),
 
 #API
-    url(r'^api/1.0/blogs/$', BlogsAPI.as_view(), name="blogs_api"),
+    url(r'^api/0.1/blogs/$', BlogsAPI.as_view(), name="blogs_api"),
 # API Routers
     url(r'^api/1.0/', include(router.urls)),
 
