@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <section class="container articles">
+    {% for post in posts %}
+        <article class="article" data-id="{{ post.id }}">
+        {% if post.attachment %}
+            <img class="ilustration" src="{% static '/images/' %}{{ post.attachment }}" alt="imagen del post">
+        {% else %}
+            <img class="ilustration empty" src="{% static '/images/transparent.png' %}" alt="post sin imagen">
+        {% endif %}
+            <div class="info">
+                <header>
+                    <div class="author">
+                        <img class="portrait" src="{% static '/images/' %}{% if post.blog.owner.profile.photo %}{{ post.blog.owner.profile.photo }}{% else %}{{ 'unknown.jpg' }}{% endif %}" alt="foto del autor">
+                        <p class="nombre"><a href="./blogs/{{ post.blog.owner.username }}">{{post.blog.owner.first_name}} {{post.blog.owner.last_name}}</a></p>
+                        <p class="date"><time datetime='{{ post.date_pub | date:"Y-m-d" }}T{{ post.date_pub | date:"H:i:s" }}'></time></p>
+                    </div>
+                    <div class="socials">
+                        <div class="likes"><button class="icon-btn favorite-btn"></button><span class="num-likes">12</span></div>
+                        <div class="comments"><button class="icon-btn comments-btn"></button><span class="num-comments">34</span></div>
+                    </div>
+                </header>
+                <h1 class="title">{{ post.title }}</h1>
+                <p class="intro">{{ post.abstract }}</p>
+                <a href="./blogs/{{ post.blog.owner.username }}/{{ post.id }}" class="sigue">Seguir leyendo...</a>
+            </div>
+        </article>
+    {% endfor %}
+    </section>
+{% endblock %}

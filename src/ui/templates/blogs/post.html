@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <section class="detail-article container">
+        <ul class="categories">
+    {% for category in categories %}
+            <li>{{category.name}}</li>
+    {% endfor %}
+        </ul>
+        <h1 class="title">{{post.title}}</h1>
+        <header>
+            <div class="author">
+                <img class="portrait" src="{% static '/images/' %}{% if post.blog.owner.profile.photo %}{{ post.blog.owner.profile.photo }}{% else %}{{ 'unknown.jpg' }}{% endif %}" alt="foto del autor">
+                <p class="nombre">{{ post.blog.owner.first_name}} {{ post.blog.owner.last_name }}</p>
+                <p class="date"><time datetime='{{ post.date_pub | date:"Y-m-d" }}T{{ post.date_pub | date:"H:i:s" }}'></time></p>
+            </div>
+            <div class="socials">
+                <div class="likes"><button class="icon-btn favorite-btn"></button><span class="num-likes">12</span></div>
+                <div class="comments"><button class="icon-btn comments-btn"></button><span class="num-comments">34</span></div>
+            </div>
+        </header>
+    {% if post.attachment %}
+        <img class="ilustration" src="{% static '/images/' %}{{ post.attachment }}" alt="imagen del post">
+    {% endif %}
+        <p class="first-paragraph">{{ post.abstract }}</p>
+        <p>
+            {{ post.body }}
+        </p>
+    </section>
+{% endblock %}

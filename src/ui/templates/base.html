@@ -18,9 +18,9 @@
             </picture>
         </div>
         <div class="buttons-grp">
-            <button class="icon-btn signin navigate" id="signin" data-href="./login"></button>
+            <button class="icon-btn signin navigate" id="signin" data-href="/login"></button>
             <i class="separator"></i>
-            <button class="icon-btn signup navigate" id="signup" data-href="./signup"></button>
+            <button class="icon-btn signup navigate" id="signup" data-href="/signup"></button>
             <div class="search-grp">
                 <button class="icon-btn search" id="search"></button>
                 <input type="text" class="input-search">
@@ -32,9 +32,7 @@
         {% include "navbarIN.html" %}
     {% endif %}
 
-    <section class="container articles">
-        {% block content %}{% endblock %}
-    </section>
+    {% block content %}{% endblock %}
 
     <footer class="web-footer">
         <p class="container">digestiveThinking &copy; 2017 <a href="#top"><i class="fa fa-chevron-up  pull-right" aria-hidden="true"></i></a></p>

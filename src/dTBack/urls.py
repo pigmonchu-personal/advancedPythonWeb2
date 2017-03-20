@@ -15,20 +15,34 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from rest_framework.routers import DefaultRouter
 
 from blogs.api import BlogsAPI
+from blogs.views import blogs_list, posts_list, posts_username_list, post_complete
+from users.api import UserViewSet
 from users.views import LoginView, SignupView, logout
+
+router = DefaultRouter()
+router.register("users", UserViewSet, base_name="users_api")
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
-#Acceso al sistema
+#web en backend
+    url(r'^$', posts_list, name="posts_list"),
+    url(r'^blogs/$', blogs_list, name="blogs_list"),
+    url(r'^blogs/(?P<username>[\w.%+-]+)/$', posts_username_list, name="posts_username_list"),
+    url(r'^blogs/(?P<username>[\w.%+-]+)/(?P<post_id>[0-9]+)/$', post_complete, name="post_complete"),
+
+    #Acceso al sistema
     url(r'^login$', LoginView.as_view(), name="login"),
     url(r'^signup', SignupView.as_view(), name="signup"),
     url(r'^logout$', logout, name="logout"),
 
 #API
-    url(r'^api/1.0/blogs/$', BlogsAPI.as_view(), name="blogs_api")
+    url(r'^api/1.0/blogs/$', BlogsAPI.as_view(), name="blogs_api"),
+# API Routers
+    url(r'^api/1.0/', include(router.urls)),
 
 ]
 

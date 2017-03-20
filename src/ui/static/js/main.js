@@ -23261,7 +23261,7 @@ $().ready(function(){
             readyDetail();
             break;
         default:
-            templateEvents();
+            readyMain();
             break;          
     }
 

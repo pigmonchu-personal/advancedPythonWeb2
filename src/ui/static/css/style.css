@@ -2724,6 +2724,11 @@ form {
       @media all and (min-width: 1024px) {
         .articles .article .ilustration {
           width: 38%; } }
+      .articles .article .ilustration.empty {
+        display: none; }
+        @media all and (min-width: 768px) {
+          .articles .article .ilustration.empty {
+            display: block; } }
     .articles .article .info {
       display: flex;
       flex-direction: column; }
@@ -2779,6 +2784,91 @@ form {
       .articles .article .info .sigue {
         font-size: 13.2px; }
 
+.articles {
+  margin-top: 90px; }
+  @media all and (min-width: 1024px) {
+    .articles {
+      margin-top: 69.75px; } }
+  .articles .blog {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around; }
+    .articles .blog::after {
+      content: " ";
+      display: inline-block;
+      width: 80%;
+      margin: 20px 10%;
+      border-bottom: 1px solid #BEC7D1; }
+    .articles .blog:last-child::after {
+      border-bottom: 0px solid transparent; }
+    .articles .blog .ilustration {
+      width: 80px;
+      height: 80px; }
+      @media all and (min-width: 768px) {
+        .articles .blog .ilustration {
+          width: 125px;
+          height: 125px; } }
+      @media all and (min-width: 1024px) {
+        .articles .blog .ilustration {
+          width: 150px;
+          height: 150px; } }
+    .articles .blog .info {
+      display: flex;
+      flex-direction: column;
+      width: 90%; }
+      @media all and (min-width: 768px) {
+        .articles .blog .info {
+          width: 68%; } }
+      @media all and (min-width: 1024px) {
+        .articles .blog .info {
+          width: 75%; } }
+      .articles .blog .info header {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap; }
+        .articles .blog .info header .author {
+          display: inline-block;
+          width: 80%;
+          margin-top: 10px; }
+          .articles .blog .info header .author .portrait {
+            width: 32px;
+            margin: 0 10px 0 0;
+            border-radius: 50%;
+            float: left; }
+          .articles .blog .info header .author .nombre {
+            font-size: 13.2px;
+            margin: 3px 10px 0; }
+          .articles .blog .info header .author .date {
+            color: #8393A7;
+            font-size: 10.4px;
+            margin: 0 10px; }
+        .articles .blog .info header .socials {
+          display: inline-block;
+          width: 20%;
+          color: #8393A7;
+          text-align: right; }
+          .articles .blog .info header .socials .favorite-btn:hover,
+          .articles .blog .info header .socials .comments-btn:hover {
+            background-color: #b5f1fa; }
+          .articles .blog .info header .socials .num-likes, .articles .blog .info header .socials .num-comments {
+            margin-left: 3px;
+            display: inline-block;
+            min-width: 24px; }
+      .articles .blog .info .intro {
+        line-height: 1.5em;
+        font-size: 1.2em;
+        overflow: hidden;
+        position: relative;
+        margin-right: -1em;
+        padding-right: 1em;
+        max-height: 3em; }
+        @media all and (min-width: 768px) {
+          .articles .blog .info .intro {
+            max-height: 6em; } }
+      .articles .blog .info .sigue {
+        font-size: 13.2px; }
+
 .pagination {
   text-align: center;
   margin: 40px; }
@@ -2805,6 +2895,15 @@ form {
 
 .detail-article {
   margin-top: 90px; }
+  .detail-article ul.categories li {
+    display: inline-block;
+    width: 110px;
+    background-color: #0FBCD4;
+    color: white;
+    border-radius: 3px;
+    padding: 5px;
+    margin: 2px;
+    text-align: center; }
   .detail-article p {
     line-height: 1.5em; }
     .detail-article p.first-paragraph {
@@ -2892,12 +2991,12 @@ form {
     padding: 10px;
     margin: 20px 0; }
 
-.login, .signup {
+.login-form {
   width: 100%;
   background-color: #f2f2f2;
   margin: 20% auto; }
   @media all and (min-width: 1024px) {
-    .login, .signup {
+    .login-form {
       width: 60%; } }
 
 /*# sourceMappingURL=style.css.map */
