@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="container articles">
+        <form method="post" novalidate class="login-form">
+            {% csrf_token %}
+            <div class="header-form">New Post <span class="smallText">{{request.user.first_name}} {{request.user.last_name}}</span> </div>
+            <p class="infolist">{{ message }}</p>
+            {{ form }}
+            <div>
+                <button>Create</button>
+            </div>
+        </form>
+    </section>
+{% endblock %}

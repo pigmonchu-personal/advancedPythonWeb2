@@ -1,7 +1,9 @@
-from django.db import Error
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from rest_framework import status
+from django.utils.decorators import method_decorator
+from django.views import View
 
+from blogs.forms import PostForm
 from blogs.models import Blog, Post
 
 
@@ -52,4 +54,50 @@ def post_complete(request, username, post_id):
         return render(request, '404.html', {}, status=404)
 
 
+class NewPostView(View):
+
+    @method_decorator(login_required)
+    def get(self, request):
+        form = PostForm()
+        #El siguiente método debería estar en el __init__ de PostForm, pero no sé como hacerlo. Pendiente de investigar
+        self.__load_blog_user(form, request.user)
+        context = {
+            "form": form
+        }
+        return render(request, 'blogs/new_post.html', context)
+
+
+    @method_decorator(login_required)
+    def post(self, request):
+        form = PostForm(request.POST)
+        self.__load_blog_user(form, request.user)
+        message = ""
+
+        if form.is_valid():
+            form.instance.blog_id = form.data.get("blog_id")
+            post = form.save()
+
+            form = PostForm()
+            self.__load_blog_user(form, request.user)
+            message = "Se ha creado correctamente el post"
+
+        context = {
+            "form": form,
+            "message": message
+        }
+        return render(request, 'blogs/new_post.html', context)
+
+    def __load_blog_user(self, form, user):
+        blogs = Blog.objects.filter(owner=user.id)
+        dBlog = [('', '------')]
+        for blog in blogs:
+            t = (blog.id, blog.__str__())
+            dBlog.append(t)
+
+        tBlog = tuple(dBlog)
+
+        form.fields["blog_id"].widget.choices = tBlog
+        return
+
+        tBlog = tuple(dBlog)
 
