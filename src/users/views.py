@@ -70,7 +70,6 @@ class SignupView(View):
 
                     blog.owner = user
 
-
                     blog.save()
 
                     url = request.GET.get('next', '/new-post')

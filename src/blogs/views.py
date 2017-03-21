@@ -1,3 +1,4 @@
+import datetime
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
@@ -72,7 +73,10 @@ class NewPostView(View):
 
         if form.is_valid():
             form.instance.blog_id = form.data.get("blog_id")
-            post = form.save()
+            if not form.instance.date_pub:
+                form.instance.date_pub = datetime.datetime.now()
+
+            form.save()
 
             form = PostForm(user=request.user)
             message = "Se ha creado correctamente el post"
