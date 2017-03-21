@@ -10,8 +10,8 @@ class UserPermission(BasePermission):
             return True
 
         # si es superusuario y quiere acceder al listado
-        if request.user.is_superuser and view.action == "list":
-            return True
+        #        if request.user.is_superuser and view.action == "list":
+        #            return True
 
         # cualquiera puede crear un usuario (POST)
         if view.action == "create":

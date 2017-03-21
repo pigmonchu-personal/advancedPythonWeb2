@@ -18,7 +18,9 @@ def blogs_list(request):
     return render(request, 'blogs/list.html', context)
 
 def posts_list(request):
-    posts = Post.objects.select_related("blog", "blog__owner", "blog__owner__profile",).order_by("-date_pub")
+    from datetime import date
+
+    posts = Post.objects.select_related("blog", "blog__owner","blog__owner__profile",).filter(date_pub__lte=datetime.datetime.now()).order_by("-date_pub")
 
     context = {
         'posts': posts

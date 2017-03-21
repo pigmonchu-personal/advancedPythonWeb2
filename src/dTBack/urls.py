@@ -18,7 +18,7 @@ from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 
 from blogs.api0 import BlogsAPI
-from blogs.api import BlogViewSet
+from blogs.api import BlogViewSet, PostViewSet
 from blogs.views import blogs_list, posts_list, posts_username_list, post_complete, NewPostView
 from users.api import UserViewSet
 from users.views import LoginView, SignupView, logout
@@ -26,6 +26,7 @@ from users.views import LoginView, SignupView, logout
 router = DefaultRouter()
 router.register("users", UserViewSet, base_name="users_api")
 router.register("blogs", BlogViewSet, base_name="blogs_api")
+router.register("posts", PostViewSet, base_name="posts_api")
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
