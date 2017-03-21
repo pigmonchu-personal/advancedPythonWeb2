@@ -4,6 +4,7 @@ from django.db import Error, IntegrityError
 from django.shortcuts import render, redirect
 from django.views import View
 
+from blogs.models import Blog
 from users.forms import LoginForm, SignupForm
 
 
@@ -60,7 +61,19 @@ class SignupView(View):
 
                 try:
                     user.save()
-                    url = request.GET.get('next', '/')
+
+                    blog = Blog()
+                    if user.first_name or user.last_name:
+                        blog.name = "Blog de " + user.first_name + " " + user.last_name
+                    else:
+                        blog.name = "Blog de " + user.username
+
+                    blog.owner = user
+
+
+                    blog.save()
+
+                    url = request.GET.get('next', '/new-post')
                     return redirect(url)
 
                 except Error as err:
