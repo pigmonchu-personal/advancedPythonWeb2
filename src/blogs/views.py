@@ -58,9 +58,7 @@ class NewPostView(View):
 
     @method_decorator(login_required)
     def get(self, request):
-        form = PostForm()
-        #El siguiente método debería estar en el __init__ de PostForm, pero no sé como hacerlo. Pendiente de investigar
-        self.__load_blog_user(form, request.user)
+        form = PostForm(user=request.user)
         context = {
             "form": form
         }
@@ -69,16 +67,14 @@ class NewPostView(View):
 
     @method_decorator(login_required)
     def post(self, request):
-        form = PostForm(request.POST)
-        self.__load_blog_user(form, request.user)
+        form = PostForm(request.POST, user=request.user)
         message = ""
 
         if form.is_valid():
             form.instance.blog_id = form.data.get("blog_id")
             post = form.save()
 
-            form = PostForm()
-            self.__load_blog_user(form, request.user)
+            form = PostForm(user=request.user)
             message = "Se ha creado correctamente el post"
 
         context = {
@@ -87,17 +83,4 @@ class NewPostView(View):
         }
         return render(request, 'blogs/new_post.html', context)
 
-    def __load_blog_user(self, form, user):
-        blogs = Blog.objects.filter(owner=user.id)
-        dBlog = [('', '------')]
-        for blog in blogs:
-            t = (blog.id, blog.__str__())
-            dBlog.append(t)
-
-        tBlog = tuple(dBlog)
-
-        form.fields["blog_id"].widget.choices = tBlog
-        return
-
-        tBlog = tuple(dBlog)
 
