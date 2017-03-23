@@ -21,7 +21,7 @@ class PostPermission(BasePermission):
             return False
 
         if view.action == 'update' and request.user.is_superuser:
-            # sólo puede modificar la fecha de publicación
+            # sólo puede modificar la fecha de publicación y la clasificación por categorías
             input_entity = request.data
             db_entity = obj
 
@@ -30,14 +30,6 @@ class PostPermission(BasePermission):
                input_entity.get("body") != db_entity.body or \
                input_entity.get("blog") != db_entity.blog.id:
 
-                return False
-
-            db_categories = db_entity.categories.all()
-            db_categories_id = []
-            for category in db_categories:
-                db_categories_id.append(category.id)
-
-            if sorted(db_categories_id) != sorted(input_entity.get("categories")):
                 return False
 
         return request.user.is_authenticated
