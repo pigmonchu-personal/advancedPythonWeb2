@@ -1,3 +1,4 @@
+import datetime
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -32,7 +33,7 @@ class Post(models.Model):
     abstract = models.CharField(max_length=4000)
     body = models.TextField()
     categories = models.ManyToManyField(Category, null=True, default=None)
-    date_pub = models.DateTimeField(null=True, blank=True)
+    date_pub = models.DateTimeField(default=datetime.datetime.now())
     attachment = models.CharField(max_length=255, null=True, blank=True)
     attachment_caption = models.CharField(max_length=255, blank=True, null=True)
 

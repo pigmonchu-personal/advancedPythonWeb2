@@ -2729,10 +2729,12 @@ form {
       height: 100%; }
       @media all and (min-width: 768px) {
         .articles .article .ilustration {
-          width: 58%; } }
+          width: 58%;
+          height: 32.625%; } }
       @media all and (min-width: 1024px) {
         .articles .article .ilustration {
-          width: 38%; } }
+          width: 38%;
+          height: 21.375%; } }
       .articles .article .ilustration.empty {
         display: none; }
         @media all and (min-width: 768px) {
