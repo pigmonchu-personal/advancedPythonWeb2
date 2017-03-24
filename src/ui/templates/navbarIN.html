@@ -1,12 +1,13 @@
     <nav class="web-navbar ">
         <div class="horizontal-container">
             <ul class="menu">
-                <li class="menu-item navigate" data-href="./humanidades.html" id="humanidades">Humanidades</li>
-                <li class="menu-item navigate" data-href="./personal.html" id="personalG">Desarrollo personal</li>
-                <li class="menu-item navigate" data-href="./ciencia.html" id="ciencia">Ciencia</li>
-                <li class="menu-item navigate" data-href="./tecnologia.html" id="tecnologia">Tecnología</li>
-                <li class="menu-item navigate" data-href="./educacion.html" id="educacion">Educación</li>
-                <li class="menu-item navigate" data-href="./ocio.html" id="ocio">Ocio</li>
+                <li class="menu-item navigate" data-href="/" id="personalG">Inicio</li>
+                <li class="menu-item navigate" data-href="/blogs" id="blogs">Blogs</li>
+{%if request.user.is_authenticated %}
+                <li class="menu-item navigate" data-href="/blogs/{{ request.user.username }}" id="mis-posts">Mis posts</li> |
+                <li class="menu-item navigate" data-href="/new-post" id="new-post">Crear Entrada</li>
+                <li class="menu-item navigate" data-href="/new-blog" id="new-blog">Nuevo Blog</li>
+{% endif %}
             </ul>
         </div>
     </nav>

@@ -4,7 +4,7 @@ from django.db import models
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
-    photo = models.CharField(max_length=255, null=True, blank=True)
+    photo = models.URLField(null=True, blank=True)
 
 class Category(models.Model):
     name = models.CharField(max_length=20)
@@ -34,7 +34,7 @@ class Post(models.Model):
     body = models.TextField()
     categories = models.ManyToManyField(Category, null=True, default=None)
     date_pub = models.DateTimeField(default=datetime.datetime.now())
-    attachment = models.CharField(max_length=255, null=True, blank=True)
+    attachment = models.URLField(null=True, blank=True)
     attachment_caption = models.CharField(max_length=255, blank=True, null=True)
 
     blog = models.ForeignKey(Blog)

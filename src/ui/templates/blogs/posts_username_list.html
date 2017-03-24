@@ -2,11 +2,20 @@
 {% load static %}
 
 {% block content %}
+{% if posts|length == 0 %}
+    <section class="container articles login-form">
+
+        <h1 class="centeredText"><a href="/new-post">No hay posts.</a></h1>
+
+    </section>
+{% else %}
+
+
     <section class="container articles">
     {% for post in posts %}
         <article class="article" data-id="{{ post.id }}">
         {% if post.attachment %}
-            <img class="ilustration" src="{% static '/images/' %}{{ post.attachment }}" alt="imagen del post">
+            <img class="ilustration" src="{{ post.attachment }}" alt="imagen del post">
         {% else %}
             <img class="ilustration empty" src="{% static '/images/transparent.png' %}" alt="post sin imagen">
         {% endif %}
@@ -29,5 +38,5 @@
         </article>
     {% endfor %}
     <section class="container articles">
-
+{% endif %}
 {% endblock %}

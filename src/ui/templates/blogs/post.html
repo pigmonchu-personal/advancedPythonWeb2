@@ -21,7 +21,7 @@
             </div>
         </header>
     {% if post.attachment %}
-        <img class="ilustration" src="{% static '/images/' %}{{ post.attachment }}" alt="imagen del post">
+        <img class="ilustration" src="{{ post.attachment }}" alt="imagen del post">
     {% endif %}
         <p class="first-paragraph">{{ post.abstract }}</p>
         <p>

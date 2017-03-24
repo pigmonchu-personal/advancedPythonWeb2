@@ -1,10 +1,12 @@
 import datetime
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.utils.datetime_safe import strftime
 from django.utils.decorators import method_decorator
 from django.views import View
 
-from blogs.forms import PostForm
+from blogs.forms import PostForm, BlogForm
 from blogs.models import Blog, Post
 
 
@@ -32,6 +34,9 @@ def posts_username_list(request, username):
 
     posts = Post.objects.select_related("blog", "blog__owner", "blog__owner__profile",).filter(blog__owner__username=username).order_by("-date_pub")
 
+    if username != request.user.username and not request.user.is_superuser:
+        posts = posts.filter(date_pub__lte=datetime.datetime.now())
+
     context = {
         'posts': posts
     }
@@ -43,7 +48,8 @@ def post_complete(request, username, post_id):
     try:
         post = Post.objects.select_related("blog", "blog__owner", "blog__owner__profile").prefetch_related("categories").get(id=post_id)
 
-        if post.blog.owner.username != username:
+        format = "%Y%m%d%H%M%S"
+        if post.blog.owner.username != username or (username != request.user.username and not request.user.is_superuser and strftime(post.date_pub, format) >= strftime(datetime.datetime.now(), format)):
             return render(request, '404.html', {}, status=404)
         else:
             context = {
@@ -70,6 +76,7 @@ class NewPostView(View):
 
     @method_decorator(login_required)
     def post(self, request):
+
         form = PostForm(request.POST, user=request.user)
         message = ""
 
@@ -90,3 +97,31 @@ class NewPostView(View):
         return render(request, 'blogs/new_post.html', context)
 
 
+class NewBlogView(View):
+
+    @method_decorator(login_required)
+    def get(self, request):
+        form = BlogForm()
+        context = {
+            "form": form
+        }
+        return render(request, 'blogs/new_blog.html', context)
+
+
+    @method_decorator(login_required)
+    def post(self, request):
+        blog_with_user = Blog(owner=request.user)
+        form = BlogForm(request.POST, instance=blog_with_user)
+        message = ""
+
+        if form.is_valid():
+            form.save()
+
+            form = BlogForm()
+            message = "Se ha creado correctamente el blog"
+
+        context = {
+            "form": form,
+            "message": message
+        }
+        return render(request, 'blogs/new_blog.html', context)

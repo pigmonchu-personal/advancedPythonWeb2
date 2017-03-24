@@ -1,8 +1,8 @@
 from django import forms
-from django.contrib.admin import widgets
 from django.core.exceptions import ValidationError
 
 from blogs.models import Post, Blog
+from ui.widgets import SelectTimeWidget
 
 
 class PostForm(forms.ModelForm):
@@ -24,14 +24,7 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ("title", "abstract", "body", "attachment", "date_pub", "categories")
-        widgets = {
-            'date_pub': forms.SelectDateWidget(
-                empty_label=("Año", "Mes", "Día"),
-                attrs={'class': 'date'}
-            )
-        }
-
+        fields = ("title", "abstract", "body", "attachment", "categories", "date_pub")
 
     def __load_blog_user(self, user):
         blogs = Blog.objects.filter(owner=user.id)
@@ -45,6 +38,11 @@ class PostForm(forms.ModelForm):
         self.fields["blog_id"].widget.choices = tBlog
         return
 
+class BlogForm(forms.ModelForm):
+
+    class Meta:
+        model = Blog
+        fields = ("name", "description")
 
 
 
