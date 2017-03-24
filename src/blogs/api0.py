@@ -56,7 +56,7 @@ class BlogsAPI(GenericAPIView):
         return sort
 
     def __filter_username(self):
-        username = self.request.query_params.get('username', None)
+        username = self.request.query_params.get('owner', None)
         if username is not None:
             users = User.objects.filter(username=username)
             if users.count() == 1:
