@@ -3,7 +3,7 @@ import datetime
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet, ModelViewSet
 
-from blogs.models import Blog, Post
+from blogs.models import Blog, Post, get_type_attachment
 from blogs.permissions import PostPermission
 from blogs.serializers import BlogsListSerializer, PostsListSerializer, PostSerializer
 
@@ -30,10 +30,12 @@ class PostViewSet(ModelViewSet):
 
     def get_queryset(self):
         self.serializer_class = PostsListSerializer
+
         if self.action != "update":
             queryset = Post.objects.select_related("blog").all()
         else:
             queryset = Post.objects.prefetch_related("categories").select_related("blog").all()
+
         user = self.request.user
 
         if user.is_anonymous():
@@ -46,13 +48,16 @@ class PostViewSet(ModelViewSet):
         return queryset
 
     def perform_create(self, serializer):
+        self.save_with_attachment_type(serializer)
 
-#        serializer.validated_data["date_pub"] = datetime.datetime.now()
+    def perform_update(self, serializer):
+        self.save_with_attachment_type(serializer)
+
+    def save_with_attachment_type(self, serializer):
+        if serializer.validated_data.get("attachment"):
+            serializer.validated_data["attachment_type"] = get_type_attachment(serializer.validated_data.get("attachment"))
 
         serializer.save()
-
-
-
 
 
 

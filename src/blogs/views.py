@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 
 from blogs.forms import PostForm, BlogForm
-from blogs.models import Blog, Post
+from blogs.models import Blog, Post, get_type_attachment
 
 
 def blogs_list(request):
@@ -84,6 +84,9 @@ class NewPostView(View):
             form.instance.blog_id = form.data.get("blog_id")
             if not form.instance.date_pub:
                 form.instance.date_pub = datetime.datetime.now()
+
+            if form.instance.attachment:
+                form.instance.attachment_type = get_type_attachment(form.instance.attachment)
 
             form.save()
 

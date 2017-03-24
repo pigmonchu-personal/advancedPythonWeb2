@@ -1,4 +1,6 @@
 import datetime
+import urllib
+
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -27,15 +29,26 @@ class Blog(models.Model):
     def __str__(self):
         return self.name + "(" + self.owner.first_name + " " + self.owner.last_name +")"
 
-
 class Post(models.Model):
+
+    VIDEO = "V"
+    IMAGE = "I"
+    NONE = "N"
+    ATTACHMENT_TYPES = (
+        (VIDEO, "Video"),
+        (IMAGE, "Image"),
+        (NONE, "None")
+    )
+
+
     title = models.CharField(max_length=150)
     abstract = models.CharField(max_length=4000)
     body = models.TextField()
     categories = models.ManyToManyField(Category, null=True, default=None)
     date_pub = models.DateTimeField(default=datetime.datetime.now())
     attachment = models.URLField(null=True, blank=True)
-    attachment_caption = models.CharField(max_length=255, blank=True, null=True)
+    attachment_type = models.CharField(max_length=1, default=NONE, choices=ATTACHMENT_TYPES)
+
 
     blog = models.ForeignKey(Blog)
 
@@ -45,3 +58,17 @@ class Post(models.Model):
     def __str__(self):
         return self.blog.name + ": " + self.blog.owner.username + " - " + self.title
 
+
+def get_type_attachment(url):
+    response = urllib.request.urlopen(url)
+    if response.getcode() != 200:
+        return Post.NONE
+
+    content_type = [header for header in response.info()._headers if header[0] == 'Content-Type']
+    if content_type and 'image' in content_type[0][1]:
+        return Post.IMAGE
+
+    if content_type and 'video' in content_type[0][1]:
+        return Post.VIDEO
+
+    return Post.NONE
