@@ -50,7 +50,7 @@ class Post(models.Model):
     attachment_type = models.CharField(max_length=1, default=NONE, choices=ATTACHMENT_TYPES)
 
 
-    blog = models.ForeignKey(Blog)
+    blog = models.ForeignKey(Blog, related_name="posts")
 
     created_at = models.DateTimeField(auto_now_add=True)  # automáticamente añada la fecha de creación
     modified_at = models.DateTimeField(auto_now=True)  # automáticamente actualiza la fecha al guardar

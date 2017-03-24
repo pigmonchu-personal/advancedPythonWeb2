@@ -5,7 +5,7 @@ from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet, ModelV
 
 from blogs.models import Blog, Post, get_type_attachment
 from blogs.permissions import PostPermission
-from blogs.serializers import BlogsListSerializer, PostsListSerializer, PostSerializer
+from blogs.serializers import PostsListSerializer, PostSerializer, BlogSerializer
 
 
 class BlogViewSet(ReadOnlyModelViewSet):
@@ -15,7 +15,7 @@ class BlogViewSet(ReadOnlyModelViewSet):
     filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ("owner__username",)
     ordering_fields = ("name", "id", "description", "owner")
-    serializer_class = BlogsListSerializer
+    serializer_class = BlogSerializer
 
 class PostViewSet(ModelViewSet):
     serializer_class = PostSerializer

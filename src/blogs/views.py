@@ -19,8 +19,27 @@ def blogs_list(request):
 
     return render(request, 'blogs/list.html', context)
 
+
+def blog_detail(request, blog_id):
+    posts = Post.objects.select_related("blog", "blog__owner",).filter(blog__id=blog_id).order_by("-date_pub")
+
+    if len(posts) != 0:
+        blog = posts[0].blog
+    else:
+        blog = Blog.objects.select_related("owner").get(pk=blog_id)
+
+    username = blog.owner.username
+    if username != request.user.username and not request.user.is_superuser:
+        posts = posts.filter(date_pub__lte=datetime.datetime.now())
+
+    context = {
+        'posts': posts,
+        'blog': blog
+    }
+
+    return render(request, 'blogs/posts_blog.html', context)
+
 def posts_list(request):
-    from datetime import date
 
     posts = Post.objects.select_related("blog", "blog__owner","blog__owner__profile",).filter(date_pub__lte=datetime.datetime.now()).order_by("-date_pub")
 

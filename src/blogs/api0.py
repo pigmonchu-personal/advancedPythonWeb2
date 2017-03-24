@@ -2,6 +2,7 @@ from enum import Enum
 
 from django.contrib.auth.models import User
 from django.core.exceptions import FieldError
+from django.urls import reverse
 from rest_framework import status
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import GenericAPIView
@@ -34,6 +35,9 @@ class BlogsAPI(GenericAPIView):
         try:
             page = self.paginate_queryset(self.queryset)
             serializer = BlogsListSerializer(page, many=True)
+            for data in serializer.data:
+                data["url"] = request.get_host() + data.get("url")
+
             return self.get_paginated_response(serializer.data)
         except FieldError as err:
             error = dict()

@@ -1,14 +1,22 @@
+from django.urls import reverse
 from django.utils import timezone
 from rest_framework import serializers
 
 from blogs.models import Blog, Post
 
 
-class BlogsListSerializer(serializers.ModelSerializer):
+class BlogSerializer(serializers.ModelSerializer):
+
+    posts = serializers.StringRelatedField(many=True)
+    url = serializers.SerializerMethodField()
 
     class Meta:
         model = Blog
-        fields = ("id", "name", "description", "owner")
+        fields = ("id", "name", "description", "owner", "url", "posts")
+
+    def get_url(self, obj):
+        request = self.context.get("request")
+        return request.get_host() + reverse('blog_detail', args=[obj.id])
 
 class PostsListSerializer(serializers.ModelSerializer):
 
@@ -17,6 +25,7 @@ class PostsListSerializer(serializers.ModelSerializer):
         fields = ("id", "title", "attachment", "abstract", "date_pub")
 
 class PostSerializer(serializers.ModelSerializer):
+
 
     class Meta:
         model = Post

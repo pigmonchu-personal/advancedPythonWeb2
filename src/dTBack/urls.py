@@ -19,7 +19,8 @@ from rest_framework.routers import DefaultRouter
 
 from blogs.api0 import BlogsAPI
 from blogs.api import BlogViewSet, PostViewSet
-from blogs.views import blogs_list, posts_list, posts_username_list, post_complete, NewPostView, NewBlogView
+from blogs.views import blogs_list, posts_list, posts_username_list, post_complete, NewPostView, NewBlogView, \
+    blog_detail
 from users.api import UserViewSet
 from users.views import LoginView, SignupView, logout
 
@@ -34,6 +35,7 @@ urlpatterns = [
 #web en backend
     url(r'^$', posts_list, name="posts_list"),
     url(r'^blogs/?$', blogs_list, name="blogs_list"),
+    url(r'^blog/(?P<blog_id>[0-9]+)/?$', blog_detail, name="blog_detail"),
     url(r'^blogs/(?P<username>[\w.%+-]+)/?$', posts_username_list, name="posts_username_list"),
     url(r'^blogs/(?P<username>[\w.%+-]+)/(?P<post_id>[0-9]+)/?$', post_complete, name="post_complete"),
     url(r'^new-post/?$', NewPostView.as_view(), name="new_post"),
