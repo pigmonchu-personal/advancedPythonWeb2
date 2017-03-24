@@ -33,16 +33,16 @@ urlpatterns = [
 
 #web en backend
     url(r'^$', posts_list, name="posts_list"),
-    url(r'^blogs/$', blogs_list, name="blogs_list"),
-    url(r'^blogs/(?P<username>[\w.%+-]+)/$', posts_username_list, name="posts_username_list"),
-    url(r'^blogs/(?P<username>[\w.%+-]+)/(?P<post_id>[0-9]+)/$', post_complete, name="post_complete"),
-    url(r'^new-post/$', NewPostView.as_view(), name="new_post"),
-    url(r'^new-blog/$', NewBlogView.as_view(), name="new_blog"),
+    url(r'^blogs/?$', blogs_list, name="blogs_list"),
+    url(r'^blogs/(?P<username>[\w.%+-]+)/?$', posts_username_list, name="posts_username_list"),
+    url(r'^blogs/(?P<username>[\w.%+-]+)/(?P<post_id>[0-9]+)/?$', post_complete, name="post_complete"),
+    url(r'^new-post/?$', NewPostView.as_view(), name="new_post"),
+    url(r'^new-blog/?$', NewBlogView.as_view(), name="new_blog"),
 
     #Acceso al sistema
-    url(r'^login$', LoginView.as_view(), name="login"),
-    url(r'^signup', SignupView.as_view(), name="signup"),
-    url(r'^logout$', logout, name="logout"),
+    url(r'^login/?$', LoginView.as_view(), name="login"),
+    url(r'^signup/?$', SignupView.as_view(), name="signup"),
+    url(r'^logout/?$', logout, name="logout"),
 
 #API
     url(r'^api/0.1/blogs/$', BlogsAPI.as_view(), name="blogs_api"),

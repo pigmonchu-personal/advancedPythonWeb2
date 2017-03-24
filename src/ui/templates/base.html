@@ -20,9 +20,9 @@
         <div class="buttons-grp">
 {% if not request.user.is_authenticated %}
 
-            <button class="icon-btn signin navigate" id="signin" data-href="/login"></button>
+            <button class="icon-btn signin navigate" id="signin" data-href="/login" title="Sign in"></button>
             <i class="separator"></i>
-            <button class="icon-btn signup navigate" id="signup" data-href="/signup"></button>
+            <button class="icon-btn signup navigate" id="signup" data-href="/signup" title=Sign up"></button>
 {% else %}
             <span class="attentionText">{% if request.user.firts_name or request.user.last_name %}{{request.user.first_name}} {{request.user.last_name}}{% else %} {{ request.user.username }} {% endif %} | </span>  <button class="icon-btn signout navigate" id="signout" data-href="/logout"></button>
 {% endif %}
