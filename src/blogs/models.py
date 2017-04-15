@@ -60,7 +60,11 @@ class Post(models.Model):
 
 
 def get_type_attachment(url):
-    response = urllib.request.urlopen(url)
+    try:
+        response = urllib.request.urlopen(url)
+    except:
+        return Post.NONE
+
     if response.getcode() != 200:
         return Post.NONE
 
