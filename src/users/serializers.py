@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
+from django.utils.translation import ugettext as _
+
 
 class UsersListSerializer(serializers.Serializer):
     id = serializers.ReadOnlyField()
@@ -31,10 +33,10 @@ class UserSerializer(UsersListSerializer):
     def validate(self, attrs):
         # si estoy creando un usuario nuevo, comprobar si el username ya está usado
         if self.instance is None and User.objects.filter(username=attrs.get("username")).exists():
-            raise ValidationError("Username already exists")
+            raise ValidationError(_("El usuario ya existe"))
 
         # actualizo el usuario cambiando el username -> OK si nuevo username no está usado
         if self.instance is not None and self.instance.username != attrs.get("username") and User.objects.filter(username=attrs.get("username")).exists():
-            raise ValidationError("Username already exists")
+            raise ValidationError(_("El usuario ya existe"))
 
         return attrs

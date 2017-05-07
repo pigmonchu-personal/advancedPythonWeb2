@@ -7,6 +7,7 @@ from django.views import View
 from blogs.models import Blog
 from users.forms import LoginForm, SignupForm
 
+from django.utils.translation import ugettext as _
 
 class LoginView(View):
 
@@ -29,7 +30,7 @@ class LoginView(View):
                 url = request.GET.get('next', '/')
                 return redirect(url)
             else:
-                form.add_error("__all__", "Wrong username or password")
+                form.add_error("__all__", _("Usuario o contraseña incorrectos"))
 
         context["form"] = form
         return render(request, 'login.html', context)
@@ -49,7 +50,7 @@ class SignupView(View):
         context = dict()
         if form.is_valid():
             if User.objects.filter(username=form.cleaned_data.get("username")).exists():
-                form.add_error("username", "Username already exists")
+                form.add_error("username", _("El usuario ya existe"))
             else:
                 user = User()
 
@@ -76,7 +77,7 @@ class SignupView(View):
                     return redirect(url)
 
                 except Error as err:
-                    form.add_error("__all__", "Error en acceso a base de datos")
+                    form.add_error("__all__", _("Error en acceso a base de datos"))
                     print("Error en acceso a base de datos: ", err)
 
         context["form"] = form

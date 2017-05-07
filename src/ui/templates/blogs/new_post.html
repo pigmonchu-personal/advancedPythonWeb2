@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block content %}
     <section class="container articles">
@@ -6,12 +7,12 @@
             {% csrf_token %}
             <div class="header-form">
                 New Post <span class="smallText">{% if request.user.firts_name or request.user.last_name %}{{request.user.first_name}} {{request.user.last_name}}{% else %} {{ request.user.username }} {% endif %}</span>
-                <a class="header-button" href="/new-blog">Crear Blog</a>
+                <a class="header-button" href="/new-blog">{% trans "Crear Blog" %}</a>
             </div>
             <p class="infolist">{{ message }}</p>
             {{ form }}
             <div>
-                <button>Create</button>
+                <button>{% trans "Crear" %}</button>
             </div>
         </form>
     </section>

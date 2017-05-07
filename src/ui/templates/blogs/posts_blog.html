@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% load static %}
 
 {% block content %}
@@ -9,7 +10,7 @@
 
 {% if posts|length == 0 %}
 
-        <h1 class="centeredText"><a href="/new-post">No hay posts.</a></h1>
+        <h1 class="centeredText"><a href="/new-post">{% trans 'No hay posts' %}.</a></h1>
 
 {% else %}
 
@@ -17,18 +18,18 @@
     {% for post in posts %}
         <article class="article" data-id="{{ post.id }}">
         {% if post.attachment and post.attachment_type == "I" %}
-            <img class="ilustration" src="{{ post.attachment }}" alt="imagen del post">
+            <img class="ilustration" src="{{ post.attachment }}" alt="{% trans 'imagen del post' %}">
         {% elif post.attachment and post.attachment_type == "V" %}
             <video controls class="ilustration">
                 <source src="{{ post.attachment }}" type="video/mp4" />
             </video>
         {% else %}
-            <img class="ilustration empty" src="{% static '/images/transparent.png' %}" alt="post sin imagen">
+            <img class="ilustration empty" src="{% static '/images/transparent.png' %}" alt="{% trans 'post sin imagen '%}">
         {% endif %}
             <div class="info">
                 <header>
                     <div class="author">
-                        <img class="portrait" src="{% static '/images/' %}{% if post.blog.owner.profile.photo %}{{ post.blog.owner.profile.photo }}{% else %}{{ 'unknown.jpg' }}{% endif %}" alt="foto del autor">
+                        <img class="portrait" src="{% static '/images/' %}{% if post.blog.owner.profile.photo %}{{ post.blog.owner.profile.photo }}{% else %}{{ 'unknown.jpg' }}{% endif %}" alt="{% trans 'foto del autor ' %}r">
                         <p class="nombre">{{post.blog.owner.first_name}} {{post.blog.owner.last_name}}</p>
                         <p class="date"><time datetime='{{ post.date_pub | date:"Y-m-d" }}T{{ post.date_pub | date:"H:i:s" }}'></time></p>
                     </div>
@@ -39,7 +40,7 @@
                 </header>
                 <h1 class="title">{{ post.title }} <span class="smallText">({{ post.blog.name }})</span></h1>
                 <p class="intro">{{ post.abstract }}</p>
-                <a href="/blogs/{{ blog.owner.username}}/{{ post.id }}" class="sigue">Seguir leyendo...</a>
+                <a href="/blogs/{{ blog.owner.username}}/{{ post.id }}" class="sigue">{% trans "Seguir leyendo" %}...</a>
             </div>
         </article>
     {% endfor %}

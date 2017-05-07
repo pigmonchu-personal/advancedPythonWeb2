@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block content %}
     <section class="container articles">
         <form method="post" novalidate class="login-form">
             {% csrf_token %}
-            <div class="header-form">Private zone access</div>
+            <div class="header-form">{% trans "Acceso a zona privada" %}</div>
             <p class="errorlist">{{ error }}</p>
             {{ form }}
             <div>

@@ -40,4 +40,4 @@ class PostSerializer(serializers.ModelSerializer):
         if self.context.get("request").user.id == value.owner.id or (view.action == "update" and user.is_superuser):
             return value
 
-        raise serializers.ValidationError("Informed blog does not belong to the user")
+        raise serializers.ValidationError(_("El blog informado no pertenece al usuario"))

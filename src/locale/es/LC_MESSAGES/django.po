@@ -1,0 +1,169 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-05-07 22:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: blogs/forms.py:23
+msgid "Debe estar conectado"
+msgstr "Debe estar conectado"
+
+#: blogs/serializers.py:43
+msgid "El blog informado no pertenece al usuario"
+msgstr "El blog informado no pertenece al usuario"
+
+#: blogs/views.py:115
+msgid "Se ha creado correctamente el post"
+msgstr "Se ha creado correctamente el post"
+
+#: blogs/views.py:145
+msgid "Se ha creado correctamente el blog"
+msgstr "Se ha creado correctamente el blog"
+
+#: ui/templates/404.html:7
+msgid "Página no encontrada"
+msgstr "Página no encontrada"
+
+#: ui/templates/base.html:7
+msgid "Ocurrencias de ducha"
+msgstr "Ocurrencias de ducha"
+
+#: ui/templates/blogs/list.html:10 ui/templates/blogs/post.html:15
+msgid "Foto del autor"
+msgstr "Foto del autor"
+
+#: ui/templates/blogs/new_blog.html:10
+msgid "Crear Post"
+msgstr "Crear Blog"
+
+#: ui/templates/blogs/new_blog.html:15 ui/templates/blogs/new_post.html:15
+msgid "Crear"
+msgstr "Crear"
+
+#: ui/templates/blogs/new_post.html:10
+msgid "Crear Blog"
+msgstr "Crear Post"
+
+#: ui/templates/blogs/post.html:26 ui/templates/blogs/posts_blog.html:21
+#: ui/templates/blogs/posts_list.html:19
+#: ui/templates/blogs/posts_username_list.html:19
+msgid "imagen del post"
+msgstr "imagen del post"
+
+#: ui/templates/blogs/posts_blog.html:13
+#: ui/templates/blogs/posts_username_list.html:9
+msgid "No hay posts"
+msgstr "No hay posts"
+
+#: ui/templates/blogs/posts_blog.html:27
+msgid "post sin imagen "
+msgstr "post sin imagen"
+
+#: ui/templates/blogs/posts_blog.html:32
+msgid "foto del autor "
+msgstr "foto del autor"
+
+#: ui/templates/blogs/posts_blog.html:43 ui/templates/blogs/posts_list.html:41
+#: ui/templates/blogs/posts_username_list.html:41
+msgid "Seguir leyendo"
+msgstr "Seguir leyendo"
+
+#: ui/templates/blogs/posts_list.html:10
+msgid "Date de alta y publica la primera entrada"
+msgstr "Date de alta y publica la primera entrada"
+
+#: ui/templates/blogs/posts_list.html:25
+#: ui/templates/blogs/posts_username_list.html:25
+msgid "post sin imagen"
+msgstr "post sin imagen"
+
+#: ui/templates/blogs/posts_list.html:30
+#: ui/templates/blogs/posts_username_list.html:30
+msgid "foto del autor"
+msgstr "foto del autor"
+
+#: ui/templates/login.html:8
+msgid "Acceso a zona privada"
+msgstr "Private zone access"
+
+#: ui/templates/navbarIN.html:6
+msgid "Inicio"
+msgstr "Inicio"
+
+#: ui/templates/navbarIN.html:7
+msgid "Blogs"
+msgstr "Blogs"
+
+#: ui/templates/navbarIN.html:9
+msgid "Mis posts"
+msgstr "Mis posts"
+
+#: ui/templates/navbarIN.html:10
+msgid "Crear Entrada"
+msgstr "Crear Entrada"
+
+#: ui/templates/navbarIN.html:11
+msgid "Nuevo Blog"
+msgstr "Nuevo Blog"
+
+#: ui/templates/signup.html:8
+msgid "Crear cuenta nueva"
+msgstr "Crear cuenta nueva"
+
+#: ui/templates/signup.html:12
+msgid "Registrar"
+msgstr "Registrar"
+
+#: users/forms.py:5 users/forms.py:12
+msgid "Usuario"
+msgstr "Usuario"
+
+#: users/forms.py:7 users/forms.py:16
+msgid "Contraseña"
+msgstr "Contraseña"
+
+#: users/forms.py:14
+msgid "Correo electrónico"
+msgstr "Correo electrónico"
+
+#: users/forms.py:19
+msgid "Repita Contraseña"
+msgstr "Repita Contraseña"
+
+#: users/forms.py:22
+msgid "Nombre"
+msgstr "Nombre"
+
+#: users/forms.py:24
+msgid "Apellidos"
+msgstr "Apellidos"
+
+#: users/forms.py:33
+msgid "Las contraseñas no coinciden"
+msgstr "Las contraseñas no coincide"
+
+#: users/serializers.py:36 users/serializers.py:40 users/views.py:53
+msgid "El usuario ya existe"
+msgstr "El usuario ya existe"
+
+#: users/views.py:33
+msgid "Usuario o contraseña incorrectos"
+msgstr "Usuario o contraseña incorrectos"
+
+#: users/views.py:80
+msgid "Error en acceso a base de datos"
+msgstr "Error en acceso a base de datos"

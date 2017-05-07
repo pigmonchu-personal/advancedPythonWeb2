@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% load static %}
 
 {% block content %}
@@ -11,7 +12,7 @@
         <h1 class="title">{{post.title}}</h1>
         <header>
             <div class="author">
-                <img class="portrait" src="{% static '/images/' %}{% if post.blog.owner.profile.photo %}{{ post.blog.owner.profile.photo }}{% else %}{{ 'unknown.jpg' }}{% endif %}" alt="foto del autor">
+                <img class="portrait" src="{% static '/images/' %}{% if post.blog.owner.profile.photo %}{{ post.blog.owner.profile.photo }}{% else %}{{ 'unknown.jpg' }}{% endif %}" alt="{% trans 'Foto del autor' %}r">
                 <p class="nombre">{{ post.blog.owner.first_name}} {{ post.blog.owner.last_name }}</p>
                 <p class="date"><time datetime='{{ post.date_pub | date:"Y-m-d" }}T{{ post.date_pub | date:"H:i:s" }}'></time></p>
             </div>
@@ -22,7 +23,7 @@
         </header>
     {% if post.attachment %}
         {% if post.attachment_type == "I" %}
-        <img class="ilustration" src="{{ post.attachment }}" alt="imagen del post">
+        <img class="ilustration" src="{{ post.attachment }}" alt="{% trans 'imagen del post' %} ">
         {% elif post.attachment_type == "V" %}
             <video controls class="ilustration">
                 <source src="{{ post.attachment }}" type="video/mp4" />

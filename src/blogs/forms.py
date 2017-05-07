@@ -2,8 +2,8 @@ from django import forms
 from django.core.exceptions import ValidationError
 
 from blogs.models import Post, Blog
-from ui.widgets import SelectTimeWidget
 
+from django.utils.translation import ugettext as _
 
 class PostForm(forms.ModelForm):
 
@@ -20,7 +20,7 @@ class PostForm(forms.ModelForm):
             self.__load_blog_user(user)
         else:
 #Solución fea y de emergencia, pero no quiero que puedan crear post asociados a blogs de usuarios que no corresponden
-            raise ValidationError("Must be logged in")
+            raise ValidationError(_("Debe estar conectado"))
 
     class Meta:
         model = Post

@@ -1,12 +1,14 @@
+{% load i18n %}
+
     <nav class="web-navbar ">
         <div class="horizontal-container">
             <ul class="menu">
-                <li class="menu-item navigate" data-href="/" id="personalG">Inicio</li>
-                <li class="menu-item navigate" data-href="/blogs" id="blogs">Blogs</li>
+                <li class="menu-item navigate" data-href="/" id="personalG">{% trans "Inicio" %}</li>
+                <li class="menu-item navigate" data-href="/blogs" id="blogs">{% trans "Blogs" %}</li>
 {%if request.user.is_authenticated %}
-                <li class="menu-item navigate" data-href="/blogs/{{ request.user.username }}" id="mis-posts">Mis posts</li> |
-                <li class="menu-item navigate" data-href="/new-post" id="new-post">Crear Entrada</li>
-                <li class="menu-item navigate" data-href="/new-blog" id="new-blog">Nuevo Blog</li>
+                <li class="menu-item navigate" data-href="/blogs/{{ request.user.username }}" id="mis-posts">{% trans "Mis posts" %}</li> |
+                <li class="menu-item navigate" data-href="/new-post" id="new-post">{% trans "Crear Entrada" %}</li>
+                <li class="menu-item navigate" data-href="/new-blog" id="new-blog">{% trans "Nuevo Blog" %}</li>
 {% endif %}
             </ul>
         </div>

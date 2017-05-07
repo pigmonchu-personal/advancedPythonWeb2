@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block content %}
     <section class="container articles">
         <form method="post" novalidate class="login-form">
             {% csrf_token %}
-            <div class="header-form">Create an account</div>
+            <div class="header-form">{% trans "Crear cuenta nueva"%}</div>
             <p class="errorlist">{{ error }}</p>
             {{ form }}
             <div>
-                <button>Sign up</button>
+                <button>{% trans "Registrar" %}</button>
             </div>
         </form>
     </section>

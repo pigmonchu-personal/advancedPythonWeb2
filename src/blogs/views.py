@@ -9,6 +9,8 @@ from django.views import View
 from blogs.forms import PostForm, BlogForm
 from blogs.models import Blog, Post, get_type_attachment
 
+from django.utils.translation import ugettext as _
+
 
 def blogs_list(request):
     blogs = Blog.objects.select_related("owner").all()
@@ -110,7 +112,7 @@ class NewPostView(View):
             form.save()
 
             form = PostForm(user=request.user)
-            message = "Se ha creado correctamente el post"
+            message = _("Se ha creado correctamente el post")
 
         context = {
             "form": form,
@@ -140,7 +142,7 @@ class NewBlogView(View):
             form.save()
 
             form = BlogForm()
-            message = "Se ha creado correctamente el blog"
+            message = _("Se ha creado correctamente el blog")
 
         context = {
             "form": form,
