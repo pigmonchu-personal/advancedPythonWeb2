@@ -2,30 +2,37 @@ from django.contrib.auth import authenticate, login as django_login, logout as d
 from django.contrib.auth.models import User
 from django.db import Error, IntegrityError
 from django.shortcuts import render, redirect
-from django.views import View
 
 from blogs.models import Blog
+from ui.views import TranslateView
 from users.forms import LoginForm, SignupForm
 
 from django.utils.translation import ugettext as _
 
-class LoginView(View):
+class LoginView(TranslateView):
 
     def get(self, request):
+
+        form = LoginForm()
+
+        self.translate(form)
+
         context = {
-            'form': LoginForm()
+            'form': form
         }
+
         return render(request, 'login.html', context)
 
     def post(self, request):
         form = LoginForm(request.POST)
+        self.translate(form)
         context = dict()
         if form.is_valid():
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
             user = authenticate(username=username, password=password)
             if user is not None:
-                request.session["default-language"] = "es"
+#                request.session["default-language"] = "es"
                 django_login(request, user)
                 url = request.GET.get('next', '/')
                 return redirect(url)
@@ -36,17 +43,24 @@ class LoginView(View):
         return render(request, 'login.html', context)
 
 
-class SignupView(View):
+
+class SignupView(TranslateView):
 
     def get(self, request):
+
+        form = SignupForm()
+
+        self.translate(form)
+
         context = {
-            'form': SignupForm()
+            'form': form
         }
 
         return render(request, 'signup.html', context)
 
     def post(self, request):
         form = SignupForm(request.POST)
+        self.translate(form)
         context = dict()
         if form.is_valid():
             if User.objects.filter(username=form.cleaned_data.get("username")).exists():

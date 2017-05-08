@@ -4,12 +4,13 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils.datetime_safe import strftime
 from django.utils.decorators import method_decorator
-from django.views import View
 
 from blogs.forms import PostForm, BlogForm
 from blogs.models import Blog, Post, get_type_attachment
 
 from django.utils.translation import ugettext as _
+
+from ui.views import TranslateView
 
 
 def blogs_list(request):
@@ -84,11 +85,12 @@ def post_complete(request, username, post_id):
         return render(request, '404.html', {}, status=404)
 
 
-class NewPostView(View):
+class NewPostView(TranslateView):
 
     @method_decorator(login_required)
     def get(self, request):
         form = PostForm(user=request.user)
+        self.translate(form)
         context = {
             "form": form
         }
@@ -99,6 +101,7 @@ class NewPostView(View):
     def post(self, request):
 
         form = PostForm(request.POST, user=request.user)
+        self.translate(form)
         message = ""
 
         if form.is_valid():
@@ -121,11 +124,12 @@ class NewPostView(View):
         return render(request, 'blogs/new_post.html', context)
 
 
-class NewBlogView(View):
+class NewBlogView(TranslateView):
 
     @method_decorator(login_required)
     def get(self, request):
         form = BlogForm()
+        self.translate(form)
         context = {
             "form": form
         }
@@ -136,6 +140,7 @@ class NewBlogView(View):
     def post(self, request):
         blog_with_user = Blog(owner=request.user)
         form = BlogForm(request.POST, instance=blog_with_user)
+        self.translate(form)
         message = ""
 
         if form.is_valid():

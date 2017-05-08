@@ -4,6 +4,8 @@ import urllib
 from django.contrib.auth.models import User
 from django.db import models
 
+from django.utils.translation import ugettext as _
+
 class Profile(models.Model):
     user = models.OneToOneField(User)
     photo = models.URLField(null=True, blank=True)
@@ -19,8 +21,8 @@ class Category(models.Model):
         return self.name
 
 class Blog(models.Model):
-    name = models.CharField(max_length=150)
-    description = models.CharField(max_length=400, blank=True, null=True)
+    name = models.CharField( max_length=150)
+    description = models.CharField( max_length=400, blank=True, null=True)
     owner = models.ForeignKey(User)
 
     created_at = models.DateTimeField(auto_now_add=True)  # automáticamente añada la fecha de creación

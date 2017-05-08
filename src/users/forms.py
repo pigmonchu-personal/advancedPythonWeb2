@@ -1,27 +1,31 @@
 from django import forms
-from django.utils.translation import ugettext as _
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label=_('Usuario'),
+
+
+    username = forms.CharField(label='Usuario',
+                               localize=True,
                                required=True)
-    password = forms.CharField(label=_('Contraseña'),
+    password = forms.CharField(label='Contraseña',
                                required=True,
+                               localize=False,
                                widget=forms.PasswordInput())
 
+
 class SignupForm(forms.Form):
-    username = forms.CharField(label=_('Usuario'),
+    username = forms.CharField(label='Usuario',
                                required=True)
-    email = forms.EmailField(label=_("Correo electrónico"),
+    email = forms.EmailField(label="Correo electrónico",
                              required=True)
-    password = forms.CharField(label=_('Contraseña'),
+    password = forms.CharField(label='Contraseña',
                                required=True,
                                widget=forms.PasswordInput())
-    confirm_password = forms.CharField(label=_("Repita Contraseña"),
+    confirm_password = forms.CharField(label="Repita Contraseña",
                                        required=True,
                                        widget=forms.PasswordInput())
-    first_name = forms.CharField(label=_("Nombre"),
+    first_name = forms.CharField(label="Nombre",
                                  required=False)
-    last_name = forms.CharField(label=_("Apellidos"),
+    last_name = forms.CharField(label="Apellidos",
                                 required=False)
 
     def clean(self):

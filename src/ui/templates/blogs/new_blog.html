@@ -6,7 +6,7 @@
         <form method="post" novalidate class="login-form">
             {% csrf_token %}
             <div class="header-form">
-                New Blog <span class="smallText">{% if request.user.firts_name or request.user.last_name %}{{request.user.first_name}} {{request.user.last_name}}{% else %} {{ request.user.username }} {% endif %}</span>
+                {% trans "Crear Blog" %} <span class="smallText">{% if request.user.firts_name or request.user.last_name %}{{request.user.first_name}} {{request.user.last_name}}{% else %} {{ request.user.username }} {% endif %}</span>
                 <a class="header-button" href="/new-post">{% trans "Crear Post" %}</a>
             </div>
             <p class="infolist">{{ message }}</p>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-07 22:46+0000\n"
+"POT-Creation-Date: 2017-05-08 22:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,11 +25,11 @@ msgstr "Must be logged"
 msgid "El blog informado no pertenece al usuario"
 msgstr "Blog does not belong to the user"
 
-#: blogs/views.py:115
+#: blogs/views.py:118
 msgid "Se ha creado correctamente el post"
 msgstr "Post succesfully created"
 
-#: blogs/views.py:145
+#: blogs/views.py:150
 msgid "Se ha creado correctamente el blog"
 msgstr "Blog succesfully created"
 
@@ -45,17 +45,17 @@ msgstr "Shower ideas"
 msgid "Foto del autor"
 msgstr "Author image"
 
-#: ui/templates/blogs/new_blog.html:10
-msgid "Crear Post"
+#: ui/templates/blogs/new_blog.html:9 ui/templates/blogs/new_post.html:10
+msgid "Crear Blog"
 msgstr "New Blog"
+
+#: ui/templates/blogs/new_blog.html:10 ui/templates/blogs/new_post.html:9
+msgid "Crear Post"
+msgstr "New Post"
 
 #: ui/templates/blogs/new_blog.html:15 ui/templates/blogs/new_post.html:15
 msgid "Crear"
 msgstr "Create"
-
-#: ui/templates/blogs/new_post.html:10
-msgid "Crear Blog"
-msgstr "New Post"
 
 #: ui/templates/blogs/post.html:26 ui/templates/blogs/posts_blog.html:21
 #: ui/templates/blogs/posts_list.html:19
@@ -127,42 +127,63 @@ msgstr "New account"
 msgid "Registrar"
 msgstr "Sign up"
 
-#: users/forms.py:5 users/forms.py:12
-msgid "Usuario"
-msgstr "User"
-
-#: users/forms.py:7 users/forms.py:16
-msgid "Contraseña"
-msgstr "Password"
-
-#: users/forms.py:14
-msgid "Correo electrónico"
-msgstr "Email"
-
-#: users/forms.py:19
-msgid "Repita Contraseña"
-msgstr "Repeat password"
-
-#: users/forms.py:22
-msgid "Nombre"
-msgstr "Name"
-
-#: users/forms.py:24
-msgid "Apellidos"
-msgstr "Lastname"
-
-#: users/forms.py:33
+#: users/forms.py:37
 msgid "Las contraseñas no coinciden"
 msgstr "Passwords do not match"
 
-#: users/serializers.py:36 users/serializers.py:40 users/views.py:53
+#: users/serializers.py:36 users/serializers.py:40 users/views.py:67
 msgid "El usuario ya existe"
 msgstr "User already exists"
 
-#: users/views.py:33
+#: users/views.py:40
 msgid "Usuario o contraseña incorrectos"
 msgstr "Incorrect user or password"
 
-#: users/views.py:80
+#: users/views.py:94
 msgid "Error en acceso a base de datos"
 msgstr "Database access error"
+
+msgid "Nombre"
+msgstr "Name"
+
+msgid "Descripción"
+msgstr "Description"
+
+msgid "Título"
+msgstr "Title"
+
+msgid "Resumen"
+msgstr "Abstract"
+
+msgid "Texto"
+msgstr "Text"
+
+msgid "Media"
+msgstr "Media"
+
+msgid "Categorías"
+msgstr "Categories"
+
+msgid "Fecha de publicación"
+msgstr "Publish date"
+
+msgid "Foto"
+msgstr "Photo"
+
+msgid "Descripcion"
+msgstr "Description"
+
+msgid "Usuario"
+msgstr "User"
+
+msgid "Contraseña"
+msgstr "Password"
+
+msgid "Correo electrónico"
+msgstr "Email"
+
+msgid "Repita Contraseña"
+msgstr "Repeat password"
+
+msgid "Apellidos"
+msgstr "Lastname"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-07 22:46+0000\n"
+"POT-Creation-Date: 2017-05-08 22:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,11 +26,11 @@ msgstr "Debe estar conectado"
 msgid "El blog informado no pertenece al usuario"
 msgstr "El blog informado no pertenece al usuario"
 
-#: blogs/views.py:115
+#: blogs/views.py:118
 msgid "Se ha creado correctamente el post"
 msgstr "Se ha creado correctamente el post"
 
-#: blogs/views.py:145
+#: blogs/views.py:150
 msgid "Se ha creado correctamente el blog"
 msgstr "Se ha creado correctamente el blog"
 
@@ -46,17 +46,17 @@ msgstr "Ocurrencias de ducha"
 msgid "Foto del autor"
 msgstr "Foto del autor"
 
-#: ui/templates/blogs/new_blog.html:10
-msgid "Crear Post"
+#: ui/templates/blogs/new_blog.html:9 ui/templates/blogs/new_post.html:10
+msgid "Crear Blog"
 msgstr "Crear Blog"
+
+#: ui/templates/blogs/new_blog.html:10 ui/templates/blogs/new_post.html:9
+msgid "Crear Post"
+msgstr "Crear Post"
 
 #: ui/templates/blogs/new_blog.html:15 ui/templates/blogs/new_post.html:15
 msgid "Crear"
 msgstr "Crear"
-
-#: ui/templates/blogs/new_post.html:10
-msgid "Crear Blog"
-msgstr "Crear Post"
 
 #: ui/templates/blogs/post.html:26 ui/templates/blogs/posts_blog.html:21
 #: ui/templates/blogs/posts_list.html:19
@@ -98,7 +98,7 @@ msgstr "foto del autor"
 
 #: ui/templates/login.html:8
 msgid "Acceso a zona privada"
-msgstr "Private zone access"
+msgstr "Acceso a zona privada"
 
 #: ui/templates/navbarIN.html:6
 msgid "Inicio"
@@ -128,42 +128,63 @@ msgstr "Crear cuenta nueva"
 msgid "Registrar"
 msgstr "Registrar"
 
-#: users/forms.py:5 users/forms.py:12
-msgid "Usuario"
-msgstr "Usuario"
-
-#: users/forms.py:7 users/forms.py:16
-msgid "Contraseña"
-msgstr "Contraseña"
-
-#: users/forms.py:14
-msgid "Correo electrónico"
-msgstr "Correo electrónico"
-
-#: users/forms.py:19
-msgid "Repita Contraseña"
-msgstr "Repita Contraseña"
-
-#: users/forms.py:22
-msgid "Nombre"
-msgstr "Nombre"
-
-#: users/forms.py:24
-msgid "Apellidos"
-msgstr "Apellidos"
-
-#: users/forms.py:33
+#: users/forms.py:37
 msgid "Las contraseñas no coinciden"
 msgstr "Las contraseñas no coincide"
 
-#: users/serializers.py:36 users/serializers.py:40 users/views.py:53
+#: users/serializers.py:36 users/serializers.py:40 users/views.py:67
 msgid "El usuario ya existe"
 msgstr "El usuario ya existe"
 
-#: users/views.py:33
+#: users/views.py:40
 msgid "Usuario o contraseña incorrectos"
 msgstr "Usuario o contraseña incorrectos"
 
-#: users/views.py:80
+#: users/views.py:94
 msgid "Error en acceso a base de datos"
 msgstr "Error en acceso a base de datos"
+
+msgid "Nombre"
+msgstr "Nombre"
+
+msgid "Descripción"
+msgstr "Descripción"
+
+msgid "Título"
+msgstr "Título"
+
+msgid "Resumen"
+msgstr "Resumen"
+
+msgid "Texto"
+msgstr "Texto"
+
+msgid "Media"
+msgstr "Media"
+
+msgid "Categorías"
+msgstr "Categorías"
+
+msgid "Fecha de publicación"
+msgstr "Fecha de publicación"
+
+msgid "Foto"
+msgstr "Foto"
+
+msgid "Descripcion"
+msgstr "Descripción"
+
+msgid "Usuario"
+msgstr "Usuario"
+
+msgid "Contraseña"
+msgstr "Contraseña"
+
+msgid "Correo electrónico"
+msgstr "Correo electrónico"
+
+msgid "Repita Contraseña"
+msgstr "Repita Contraseña"
+
+msgid "Apellidos"
+msgstr "Apellidos"

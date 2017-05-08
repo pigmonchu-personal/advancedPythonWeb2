@@ -26,6 +26,16 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ("title", "abstract", "body", "attachment", "categories", "date_pub")
 
+#Estas etiquetas deben traducirse, pueden crearse las claves la primera vez y luego descomentarlas cada vez que se compile
+        labels = {
+            "title": "Título",
+            "abstract": "Resumen",
+            "body": "Texto",
+            "attachment": "Media",
+            "categories": "Categorías",
+            "date_pub": "Fecha de publicación"
+        }
+
     def __load_blog_user(self, user):
         blogs = Blog.objects.filter(owner=user.id)
         dBlog = [('', '------')]
@@ -43,6 +53,11 @@ class BlogForm(forms.ModelForm):
     class Meta:
         model = Blog
         fields = ("name", "description")
+        # Estas etiquetas deben traducirse, pueden crearse las claves la primera vez y luego descomentarlas cada vez que se compile
+        labels = {
+            "name": "Nombre",
+            "description": "Descripción"
+        }
 
 
 
