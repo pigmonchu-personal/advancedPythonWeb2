@@ -1,14 +1,21 @@
-# Internacionalización
+# Puesta en marcha del sistema
+
+## Nota 1. - 
+
+Debe crearse al menos una categoría para los posts con el administrador de django. En otro caso será imposible dar de alta un post, puesto que el campo categoría es obligado.
+
+# Notas para el profesor
+
+## Internacionalización
 Se ha internacionalizado la web de forma que puede utilizar ingles y español. Por defecto es inglés.
 
-La traducción de las etiquetas de los campos de los formularios se ha complicado un poco. Si la hago directamente al definir el formulario queda siempre en inglés, ya que la definición de los formularios se realiza al lanzar la aplicación y no existe un request con una cabecera Accept-Language para extraer el idioma de la petición.
+La traducción de las etiquetas de los campos de los formularios se ha complicado un poco. Si la hago directamente al definir el formulario queda siempre en inglés, ya que la definición de los formularios se realiza al lanzar la aplicación y no existe un request con una cabecera `Accept-Language` para extraer el idioma de la petición.
 
-He creado una TranslateView(View) en la aplicación ui. En ella he definido un método translate que recorre todas las labels del formulario en el momento de la petición y las traduce.
+He creado una clase `TranslateView(View)` en la aplicación `ui`. En ella he definido un método `translate` que recorre todas las labels del formulario en el momento de la petición y las traduce.
 
-El problema viene a la hora de generar los ficheros .po, las claves hay que ponerlas a mano o forzando una primera traducción al declarar el objeto labels de cada vista. Además quedan comentadas en cada nueva generación de cadenas a traducir. Es incómodo pero no he encontrado una solución más automática.
+**El problema viene** a la hora de generar los ficheros .po, las claves hay que ponerlas a mano o forzando una primera traducción al declarar el objeto labels de cada vista. Además quedan comentadas en cada nueva generación de cadenas a traducir. Es incómodo pero no tengo tiempo, por ahora, para desarrollar una solución más elegante.
 
-
-# Notas a los requisitos
+## Notas a los requisitos
 
 1. Al hacer signup, el usuario no queda logueado al sistema porque creo que es mejor  montar el ciclo de validación de correo. No lo construyo, pero obligo al usuario a loguearse manualmente al sistema como recordatorio/simulación de que queda pendiente la validación del correo.
 2. Al comenzar me pareció una buena idea montar el sistema de forma que un usuario pueda tener más de un blog (si yo fuera un usuario me gustaría tener dos distintos). Me ha ido dando problemas pero los he ido solventado. Sin embargo he tenido que tomar ciertas decisiones que no sé si van en contra de los requisitos.

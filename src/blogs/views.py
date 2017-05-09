@@ -100,7 +100,7 @@ class NewPostView(TranslateView):
     @method_decorator(login_required)
     def post(self, request):
 
-        form = PostForm(request.POST, user=request.user)
+        form = PostForm(request.POST, request.FILES, user=request.user)
         self.translate(form)
         message = ""
 
@@ -109,8 +109,8 @@ class NewPostView(TranslateView):
             if not form.instance.date_pub:
                 form.instance.date_pub = datetime.datetime.now()
 
-            if form.instance.attachment:
-                form.instance.attachment_type = get_type_attachment(form.instance.attachment)
+#            if form.instance.attachment:
+#                form.instance.attachment_type = get_type_attachment(form.instance.attachment)
 
             form.save()
 

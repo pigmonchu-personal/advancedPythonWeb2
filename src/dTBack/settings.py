@@ -46,7 +46,6 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-#    'dTBack.middleware.MyLocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -159,7 +158,9 @@ LOGGING = {
 
 
 # Login URL
-LOGIN_URL = '/login'
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+
 
 # REST Framework Settings
 REST_FRAMEWORK = {
@@ -176,10 +177,11 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
 }
 
-APPEND_SLASH = False
+#APPEND_SLASH = False
 
 
+STATIC_URL = '/static/'
 
 # MEDIA ROOT
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

@@ -48,7 +48,8 @@ class Post(models.Model):
     body = models.TextField()
     categories = models.ManyToManyField(Category, null=True, default=None)
     date_pub = models.DateTimeField(default=datetime.datetime.now())
-    attachment = models.URLField(null=True, blank=True)
+#    attachment = models.URLField(null=True, blank=True)
+    attachment = models.FileField(null=True, blank=True)
     attachment_type = models.CharField(max_length=1, default=NONE, choices=ATTACHMENT_TYPES)
 
 

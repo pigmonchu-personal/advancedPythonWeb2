@@ -3,7 +3,7 @@
 
 {% block content %}
     <section class="container articles">
-        <form method="post" novalidate class="login-form">
+        <form method="post" novalidate class="login-form" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="header-form">
                 {% trans "Crear Post" %} <span class="smallText">{% if request.user.firts_name or request.user.last_name %}{{request.user.first_name}} {{request.user.last_name}}{% else %} {{ request.user.username }} {% endif %}</span>
