@@ -41,7 +41,24 @@
     {% block content %}{% endblock %}
 
     <footer class="web-footer">
-        <p class="container">digestiveThinking &copy; 2017 <a href="#top"><i class="fa fa-chevron-up  pull-right" aria-hidden="true"></i></a></p>
+        <p class="container">
+            digestiveThinking &copy; 2017
+            <a href="#top"><i class="fa fa-chevron-up  pull-right" aria-hidden="true"></i></a>
+        {% get_current_language as LANGUAGE_CODE%}
+        {% get_available_languages as LANGUAGES %}
+        {% for language in LANGUAGES %}
+            <span class="pull-right">&nbsp;
+            {% if language.0 != LANGUAGE_CODE %}
+                <a href="{% url 'change-language' language.0 %}">
+                    {{language.0 | language_name_local}}
+                </a>
+            {% else %}
+                {{ language.0 | language_name_local }}
+            {% endif %}
+             |</span>
+        {% endfor %}
+
+        </p>
     </footer>
 </body>
 <script src="{% static 'js/main.js' %}"></script>

@@ -21,6 +21,7 @@ from blogs.api0 import BlogsAPI
 from blogs.api import BlogViewSet, PostViewSet
 from blogs.views import blogs_list, posts_list, posts_username_list, post_complete, NewPostView, NewBlogView, \
     blog_detail
+from ui.views import ChangeLanguage
 from users.api import UserViewSet
 from users.views import LoginView, SignupView, logout
 
@@ -31,6 +32,7 @@ router.register("posts", PostViewSet, base_name="posts_api")
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^change-language/(?P<language>.+)$', ChangeLanguage.as_view(), name="change-language"),
 
 #web en backend
     url(r'^$', posts_list, name="posts_list"),

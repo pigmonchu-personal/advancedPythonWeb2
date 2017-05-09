@@ -4,3 +4,5 @@ db.sqlite3
 .DS_Store
 dTBack_Env/
 dTFrontEnd/
+microservices
+src/media
