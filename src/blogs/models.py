@@ -42,16 +42,13 @@ class Post(models.Model):
         (NONE, "None")
     )
 
-
     title = models.CharField(max_length=150)
     abstract = models.CharField(max_length=4000)
     body = models.TextField()
     categories = models.ManyToManyField(Category, null=True, default=None)
     date_pub = models.DateTimeField(default=datetime.datetime.now())
-#    attachment = models.URLField(null=True, blank=True)
     attachment = models.FileField(null=True, blank=True)
     attachment_type = models.CharField(max_length=1, default=NONE, choices=ATTACHMENT_TYPES)
-
 
     blog = models.ForeignKey(Blog, related_name="posts")
 

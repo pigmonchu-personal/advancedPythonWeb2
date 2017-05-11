@@ -19,6 +19,7 @@ class BlogViewSet(ReadOnlyModelViewSet):
     serializer_class = BlogSerializer
 
 class PostViewSet(ModelViewSet):
+
     serializer_class = PostSerializer
     filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ("title", "body", "abstract")
