@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-# TODO: Write here your API ViewSets
+
 from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import AllowAny
 
 from microservice.models import File
 from microservice.serializers import FileSerializer

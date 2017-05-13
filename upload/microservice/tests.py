@@ -1,9 +1,22 @@
-
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, Client
+from rest_framework.reverse import reverse
+
 
 class UploadApiTests(TestCase):
 
-    def test_url_upload_exists(self):
+    def test_url_upload_without_file_error(self):
         client = Client()
-        response = client.post("http://localhost:8000/api/1.0/upload")
-        self.assertEqual(response.status_code, 200)
+        response = client.post(reverse("upload_media"))
+        print(response)
+        self.assertEqual(response.status_code, 400)
+
+    def test_url_upload_with_incorrect_file_type(self):
+        client = Client()
+        data = {
+            'file':  SimpleUploadedFile("post.pdf", "pdf_document".encode(), content_type="application/pdf")
+        }
+        response = client.post(reverse("upload_media"), data, format="raw")
+        print(response)
+        self.assertEqual(response.status_code, 400)
+
