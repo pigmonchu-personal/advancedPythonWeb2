@@ -80,5 +80,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
+#    'DEFAULT_AUTHENTICATION_CLASSES': [],
+#    'DEFAULT_PERMISSION_CLASSES': [],
     'UNAUTHENTICATED_USER': None
+}
+
+UPLOAD_FILE_TYPES = {
+    'images': ['image/jpeg', 'image/gif', 'image/png', 'image/apng', 'image/svg', 'image/bmp'],
+    'videos': ['video/mp4', 'video/webm', 'video/ogg', 'application/ogg']
 }

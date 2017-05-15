@@ -4,6 +4,30 @@
 
 Debe crearse al menos una categoría para los posts con el administrador de django. En otro caso será imposible dar de alta un post, puesto que el campo categoría es obligado.
 
+La validación de tipos de ficheros para subir implica utilizar la librería `python-magic` y esta tiene ciertas dependencias en función del sistema operativo en que se instale, ver [https://github.com/ahupp/python-magic#dependencies](https://github.com/ahupp/python-magic#dependencies). En mi caso he instalado libmagic con homebrew
+
+
+## Tipos de attactment admitidos para un post
+
+La api de upload de imágenes y videos sólo admitirá este tipo de ficheros. Se admitirán **videos** de tipo  
+
+	- WebM, 
+	- Ogg, 
+	- MP4, 
+
+Las **imágenes** admitidas serán
+
+	- JPEG, 
+	- GIF, 
+	- PNG, 
+	- APNG, 
+	- SVG, 
+	- BMP, 
+
+La relación de extensiones con formato de fichero la he tomado de [https://www.sitepoint.com/web-foundations/mime-types-complete-list/](https://www.sitepoint.com/web-foundations/mime-types-complete-list/)
+
+
+
 # Notas para el profesor
 
 ## Internacionalización

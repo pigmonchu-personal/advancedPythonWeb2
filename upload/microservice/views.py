@@ -10,3 +10,6 @@ from microservice.serializers import FileSerializer
 class FileUploadApiView(CreateAPIView):
     queryset = File.objects.all()
     serializer_class = FileSerializer
+
+
+
