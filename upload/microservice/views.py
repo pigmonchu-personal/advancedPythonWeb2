@@ -1,13 +1,11 @@
-# -*- coding: utf-8 -*-
-
-from rest_framework.generics import CreateAPIView
-from rest_framework.permissions import AllowAny
+from rest_framework.mixins import CreateModelMixin
+from rest_framework.viewsets import GenericViewSet
 
 from microservice.models import File
 from microservice.serializers import FileSerializer
 
 
-class FileUploadApiView(CreateAPIView):
+class FileUploadViewSet(CreateModelMixin, GenericViewSet):
     queryset = File.objects.all()
     serializer_class = FileSerializer
 

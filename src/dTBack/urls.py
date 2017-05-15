@@ -23,6 +23,7 @@ from blogs.api0 import BlogsAPI
 from blogs.api import BlogViewSet, PostViewSet
 from blogs.views import blogs_list, posts_list, posts_username_list, post_complete, NewPostView, NewBlogView, \
     blog_detail
+from dTBack.views import UploadAPIProxyView
 from ui.views import ChangeLanguage
 from users.api import UserViewSet
 from users.views import LoginView, SignupView, logout
@@ -55,5 +56,7 @@ urlpatterns = [
 # API Routers
     url(r'^api/1.0/', include(router.urls)),
 
+# MicroServices
+    url(r'api/1.0/upload/$', UploadAPIProxyView.as_view(), name="upload_api"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
