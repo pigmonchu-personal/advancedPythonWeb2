@@ -6,6 +6,9 @@ from django.db import models
 
 from django.utils.translation import ugettext as _
 
+from dTBack import settings
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User)
     photo = models.URLField(null=True, blank=True)
@@ -49,7 +52,7 @@ class Post(models.Model):
     date_pub = models.DateTimeField(default=datetime.datetime.now())
     attachment = models.FileField(null=True, blank=True)
     attachment_type = models.CharField(max_length=1, default=NONE, choices=ATTACHMENT_TYPES)
-
+    attachment_description = models.CharField(max_length=255, null=True, blank=True)
     blog = models.ForeignKey(Blog, related_name="posts")
 
     created_at = models.DateTimeField(auto_now_add=True)  # automáticamente añada la fecha de creación
@@ -59,20 +62,14 @@ class Post(models.Model):
         return self.blog.name + ": " + self.blog.owner.username + " - " + self.title
 
 
-def get_type_attachment(url):
+def get_type_attachment(file):
     try:
-        response = urllib.request.urlopen(url)
+        if file.content_type in settings.UPLOAD_FILE_TYPES.get("images"):
+            return Post.IMAGE
+        elif file.content_type in settings.UPLOAD_FILE_TYPES.get("videos"):
+            return Post.VIDEO
+        else:
+            return Post.NONE
     except:
         return Post.NONE
 
-    if response.getcode() != 200:
-        return Post.NONE
-
-    content_type = [header for header in response.info()._headers if header[0] == 'Content-Type']
-    if content_type and 'image' in content_type[0][1]:
-        return Post.IMAGE
-
-    if content_type and 'video' in content_type[0][1]:
-        return Post.VIDEO
-
-    return Post.NONE

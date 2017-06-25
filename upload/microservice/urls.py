@@ -4,7 +4,7 @@ from microservice.views import FileUploadViewSet
 
 router = SimpleRouter()
 
-router.register(u'api/1.0/upload', FileUploadViewSet)
+router.register(u'api/microservice/upload', FileUploadViewSet)
 
 urlpatterns = router.urls
 

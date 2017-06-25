@@ -10,6 +10,7 @@ from blogs.models import Blog, Post, get_type_attachment
 
 from django.utils.translation import ugettext as _
 
+from dTBack import settings
 from ui.views import TranslateView
 
 
@@ -76,7 +77,8 @@ def post_complete(request, username, post_id):
         else:
             context = {
                 'post': post,
-                'categories': post.categories.all()
+                'categories': post.categories.all(),
+                'media_path' : settings.MEDIA_URL
             }
 
             return render(request, 'blogs/post.html', context)
@@ -109,13 +111,22 @@ class NewPostView(TranslateView):
             if not form.instance.date_pub:
                 form.instance.date_pub = datetime.datetime.now()
 
-#            if form.instance.attachment:
-#                form.instance.attachment_type = get_type_attachment(form.instance.attachment)
-
+            there_Is_A_File = False
+            
+            if form.instance.attachment:
+                form.instance.attachment_type = get_type_attachment(form.cleaned_data["attachment"])
+                there_Is_A_File = True
+                if form.instance.attachment_type == Post.NONE:
+                    form.instance.attachment = None
+                
             form.save()
 
             form = PostForm(user=request.user)
-            message = _("Se ha creado correctamente el post")
+
+            if there_Is_A_File and form.instance.attachment_type == Post.NONE:
+                message = _("Se ha creado correctamente el post sin media file. Ver tipos de fichero admitidos.")
+            else:
+                message = _("Se ha creado correctamente el post")
 
         context = {
             "form": form,

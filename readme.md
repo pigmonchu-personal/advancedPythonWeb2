@@ -7,7 +7,7 @@ Debe crearse al menos una categoría para los posts con el administrador de djan
 La validación de tipos de ficheros para subir implica utilizar la librería `python-magic` y esta tiene ciertas dependencias en función del sistema operativo en que se instale, ver [https://github.com/ahupp/python-magic#dependencies](https://github.com/ahupp/python-magic#dependencies). En mi caso he instalado libmagic con homebrew
 
 
-## Tipos de attactment admitidos para un post
+## Tipos de attachment admitidos para un post
 
 La api de upload de imágenes y videos sólo admitirá este tipo de ficheros. Se admitirán **videos** de tipo  
 

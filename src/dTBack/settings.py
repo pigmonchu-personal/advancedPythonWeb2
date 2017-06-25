@@ -65,6 +65,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.template.context_processors.media',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -190,4 +191,9 @@ MEDIA_URL = '/upload/media/'
 #Microservices URL
 MICROSERVICES = {
     "UploadMicroService": "http://127.0.0.1:8001"
+}
+
+UPLOAD_FILE_TYPES = {
+    'images': ['image/jpeg', 'image/gif', 'image/png', 'image/apng', 'image/svg', 'image/bmp'],
+    'videos': ['video/mp4', 'video/webm', 'video/ogg', 'application/ogg']
 }
