@@ -92,5 +92,5 @@ MEDIA_URL = '../src/upload/media/'
 
 UPLOAD_FILE_TYPES = {
     'images': ['image/jpeg', 'image/gif', 'image/png', 'image/apng', 'image/svg', 'image/bmp'],
-    'videos': ['video/mp4', 'video/webm', 'video/ogg', 'application/ogg']
+     'videos': ['video/mp4', 'video/webm', 'video/ogg', 'application/ogg']
 }
