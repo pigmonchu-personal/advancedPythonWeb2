@@ -10,3 +10,5 @@ upload/media
 img_examples/
 microservices
 api-gateway
+src/rabbitmq_server/
+

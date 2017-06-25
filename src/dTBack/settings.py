@@ -130,10 +130,6 @@ LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.10/howto/static-files/
-
-STATIC_URL = '/static/'
 
 # Logging
 LOGGING = {
@@ -181,12 +177,13 @@ REST_FRAMEWORK = {
 
 #APPEND_SLASH = False
 
-
+STATIC_APP = 'ui'
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, STATIC_APP, 'static')
 
 # MEDIA ROOT
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/upload/media/'
+MEDIA_URL = '/media/'
 
 #Microservices URL
 MICROSERVICES = {

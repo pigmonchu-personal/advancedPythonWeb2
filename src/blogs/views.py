@@ -11,6 +11,7 @@ from blogs.models import Blog, Post, get_type_attachment
 from django.utils.translation import ugettext as _
 
 from dTBack import settings
+from dTBack.celery import resizeImage
 from ui.views import TranslateView
 
 
@@ -120,6 +121,8 @@ class NewPostView(TranslateView):
                     form.instance.attachment = None
                 
             form.save()
+            if there_Is_A_File and form.instance.attachment_type == Post.IMAGE:
+                resizeImage.delay(form.instance.attachment.name, 400)
 
             form = PostForm(user=request.user)
 
