@@ -56,7 +56,5 @@ urlpatterns = [
 # API Routers
     url(r'^api/1.0/', include(router.urls)),
 
-# MicroServices
-    url(r'api/microservice/upload/$', UploadAPIProxyView.as_view(), name="upload_api"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

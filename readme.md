@@ -4,7 +4,10 @@
 
 Debe crearse al menos una categoría para los posts con el administrador de django. En otro caso será imposible dar de alta un post, puesto que el campo categoría es obligado.
 
-La validación de tipos de ficheros para subir implica utilizar la librería `python-magic` y esta tiene ciertas dependencias en función del sistema operativo en que se instale, ver [https://github.com/ahupp/python-magic#dependencies](https://github.com/ahupp/python-magic#dependencies). En mi caso he instalado libmagic con homebrew
+~~La validación de tipos de ficheros para subir implica utilizar la librería `python-magic` y esta tiene ciertas dependencias en función del sistema operativo en que se instale, ver [https://github.com/ahupp/python-magic#dependencies](https://github.com/ahupp/python-magic#dependencies). En mi caso he instalado libmagic con homebrew~~
+El tipo de fichero se determina ahora por el contenido del mismo y no por la url de la que viene (sólo se admite hacer upload de imágenes). El párrafo tachado no aplica.
+
+
 
 
 ## Tipos de attachment admitidos para un post
@@ -132,6 +135,8 @@ He creado una clase `TranslateView(View)` en la aplicación `ui`. En ella he def
 
 **Requisito**: _"Un endpoint para crear posts en el cual el usuario deberá estar autenticado. En este endpoint el post quedará publicado automáticamente en el blog del usuario autenticado."_
 
+Se ha modificado la API para poder subir ficheros. Se impide que se informe el attachment aquí, sin embargo si que se informa la descripción de la imagen (opcional)
+
 ### Parámetros
 
  *Parámetro* | *En* | *Descripción* | *Obligatorio* | *Schema* 
@@ -140,9 +145,22 @@ He creado una clase `TranslateView(View)` en la aplicación `ui`. En ella he def
  **abstract** | body | Resumen del post. | Si | string
  **body** | body | Texto del post. | Si | string
  **categories** | body | Array de identificadores de las categorías del post. | Si | string
- **attachment** | body | Url del foto o video principal del post | No | string (url)
+ ~~**attachment**~~ | ~~body~~ | ~~Url del foto o video principal del post~~ | ~~No~~ | ~~string (url)~~
+ **attachment_description** | body | Descripción de la imagen para el campo alt | No | string 
  **blog** | body | identificador del blog al que pertenece el post. | Si | number
  **date_pub** | body | Fecha y hora de publicación | Si | string (date 'YYYY-MM-DDTHH:MM:SSZ')
+ 
+ 
+### POST /api/1.0/media/{id_post}
+
+**Requisito**: _"...se desea habilitar la posibilidad de subir imágenes a través de un endpoint del API y que, automáticamente el sistema se encargue de generar las versiones responsive de las imágenes así como un thumbnail de la imagen como tamaño máximo."_
+
+### Parámetros
+
+ *Parámetro* | *En* | *Descripción* | *Obligatorio* | *Schema* 
+ :------ | :---------- | :----------- | :----------- | :------ 
+ **file** | body | Fichero de los tipos indicados más arriga | Si | File
+ **id_post** | url | Identificador del post. | Si | number
  
 
 ### GET /api/1.0/posts/{id}
@@ -156,7 +174,7 @@ He creado una clase `TranslateView(View)` en la aplicación `ui`. En ella he def
  **id** | url | Identificador del post. | Si | number
  
 
-### PUT /api/1.0/posts/
+### PUT /api/1.0/posts/{id}/
 
 **Requisito**: _"Un endpoint de actualización de un post. Sólo podrá acceder al mismo el dueño del post o un administrador."_
 
@@ -164,11 +182,13 @@ He creado una clase `TranslateView(View)` en la aplicación `ui`. En ella he def
 
  *Parámetro* | *En* | *Descripción* | *Obligatorio* | *Schema* 
  :------ | :---------- | :----------- | :----------- | :------ 
+ **id** | url | Identificador del post. | Si | number
  **title** | body | Título del post | Si | string
  **abstract** | body | Resumen del post. | Si | string
  **body** | body | Texto del post. | Si | string
  **categories** | body | Array de identificadores de las categorías del post. | Si | string
- **attachment** | body | Url del foto o video principal del post | No | string (url)
+ ~~**attachment**~~ | ~~body~~ | ~~Url del foto o video principal del post~~ | ~~No~~ | ~~string (url)~~
+ **attachment_description** | body | Descripción de la imagen para el campo alt | No | string (url)
  **blog** | body | identificador del blog al que pertenece el post. | Si | number
  **date_pub** | body | Fecha y hora de publicación | Si | string (date 'YYYY-MM-DDTHH:MM:SSZ')
  

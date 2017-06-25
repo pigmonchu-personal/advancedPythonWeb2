@@ -24,14 +24,20 @@ class PostsListSerializer(serializers.ModelSerializer):
         model = Post
         fields = ("id", "title", "attachment", "abstract", "date_pub")
 
-class PostSerializer(serializers.ModelSerializer):
 
+class PostsRetrieveSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Post
+        fields = ("title", "abstract", "body", "categories", "attachment", "attachment_description", "blog", "date_pub")
+
+
+class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
 
-#TODO Revisar attachment para convertirlo en una cadena y poder subir sólo el path del recurso
         model = Post
-        fields = ("title", "abstract", "body", "categories", "attachment", "attachment_type", "blog", "date_pub")
+        fields = ("id", "title", "abstract", "body", "categories", "attachment", "attachment_description", "blog", "date_pub")
 
     def validate_blog(self, value):
         user = self.context.get("request").user

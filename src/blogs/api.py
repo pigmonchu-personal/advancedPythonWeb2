@@ -6,7 +6,7 @@ from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet, ModelV
 
 from blogs.models import Blog, Post, get_type_attachment
 from blogs.permissions import PostPermission
-from blogs.serializers import PostsListSerializer, PostSerializer, BlogSerializer
+from blogs.serializers import PostsListSerializer, PostSerializer, BlogSerializer, PostsRetrieveSerializer
 
 
 class BlogViewSet(ReadOnlyModelViewSet):
@@ -28,7 +28,13 @@ class PostViewSet(ModelViewSet):
     permission_classes = (PostPermission,)
 
     def get_serializer_class(self):
-        return PostsListSerializer if self.action == "list" else PostSerializer
+
+        if self.action == "list":
+            return PostsListSerializer
+        elif self.action == "retrieve":
+            return PostsRetrieveSerializer
+        else:
+            return PostSerializer
 
     def get_queryset(self):
         self.serializer_class = PostsListSerializer
@@ -48,16 +54,11 @@ class PostViewSet(ModelViewSet):
         return queryset
 
     def perform_create(self, serializer):
-        self.save_with_attachment_type(serializer)
+        serializer.save()
 
     def perform_update(self, serializer):
-        self.save_with_attachment_type(serializer)
-
-    def save_with_attachment_type(self, serializer):
-        if serializer.validated_data.get("attachment"):
-            serializer.validated_data["attachment_type"] = get_type_attachment(serializer.validated_data.get("attachment"))
-
         serializer.save()
+
 
 
 
