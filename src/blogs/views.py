@@ -4,12 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils.datetime_safe import strftime
 from django.utils.decorators import method_decorator
-
-from blogs.forms import PostForm, BlogForm
-from blogs.models import Blog, Post, get_type_attachment
-
 from django.utils.translation import ugettext as _
 
+from blogs.forms import PostForm, BlogForm
+from blogs.models import Blog, Post, get_type_attachment_by_file
 from dTBack import settings
 from dTBack.celery import resizeImage
 from ui.views import TranslateView
@@ -115,7 +113,7 @@ class NewPostView(TranslateView):
             there_Is_A_File = False
             
             if form.instance.attachment:
-                form.instance.attachment_type = get_type_attachment(form.cleaned_data["attachment"])
+                form.instance.attachment_type = get_type_attachment_by_file(form.cleaned_data["attachment"])
                 there_Is_A_File = True
                 if form.instance.attachment_type == Post.NONE:
                     form.instance.attachment = None
@@ -168,3 +166,4 @@ class NewBlogView(TranslateView):
             "message": message
         }
         return render(request, 'blogs/new_blog.html', context)
+

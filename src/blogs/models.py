@@ -1,10 +1,8 @@
 import datetime
-import urllib
 
+import magic
 from django.contrib.auth.models import User
 from django.db import models
-
-from django.utils.translation import ugettext as _
 
 from dTBack import settings
 
@@ -62,11 +60,20 @@ class Post(models.Model):
         return self.blog.name + ": " + self.blog.owner.username + " - " + self.title
 
 
-def get_type_attachment(file):
+
+
+def get_type_attachment_by_file(file):
+    return get_type_attachment(file.content_type)
+
+
+def get_type_attachment_by_name(file):
+    return get_type_attachment(magic.from_file(file, mime=True))
+
+def get_type_attachment(content_type):
     try:
-        if file.content_type in settings.UPLOAD_FILE_TYPES.get("images"):
+        if content_type in settings.UPLOAD_FILE_TYPES.get("images"):
             return Post.IMAGE
-        elif file.content_type in settings.UPLOAD_FILE_TYPES.get("videos"):
+        elif content_type in settings.UPLOAD_FILE_TYPES.get("videos"):
             return Post.VIDEO
         else:
             return Post.NONE

@@ -32,6 +32,19 @@ class PostsRetrieveSerializer(serializers.ModelSerializer):
         fields = ("title", "abstract", "body", "categories", "attachment", "attachment_description", "blog", "date_pub")
 
 
+class MediaSerializer(serializers.ModelSerializer):
+
+    class Meta:
+
+        model = Post
+        fields = ("attachment",)
+        extra_kwargs = {'attachment': {'write_only': True}}
+
+    def validate_attachment(self, value):
+
+        return value is not None
+
+
 class PostSerializer(serializers.ModelSerializer):
 
     class Meta:

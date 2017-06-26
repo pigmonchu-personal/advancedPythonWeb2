@@ -11,4 +11,4 @@ img_examples/
 microservices
 api-gateway
 src/rabbitmq_server/
-
+src/ui/static/images/posts/*

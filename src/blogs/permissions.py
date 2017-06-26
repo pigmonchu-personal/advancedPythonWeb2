@@ -33,3 +33,20 @@ class PostPermission(BasePermission):
                 return False
 
         return request.user.is_authenticated
+
+
+class MediaPermission(BasePermission):
+
+    def has_permission(self, request, view):
+
+        return request.user.is_authenticated
+
+
+    def has_object_permission(self, request, view, obj):
+
+        if not request.user.is_authenticated:
+            return False
+
+        db_entity = obj
+
+        return db_entity.blog.owner.id == request.user.id

@@ -1,12 +1,19 @@
 import datetime
+import os
 
 from django.db.models import Q
+from rest_framework import mixins
 from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet, ModelViewSet
+from rest_framework.parsers import FileUploadParser
+from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet, GenericViewSet
 
-from blogs.models import Blog, Post, get_type_attachment
-from blogs.permissions import PostPermission
-from blogs.serializers import PostsListSerializer, PostSerializer, BlogSerializer, PostsRetrieveSerializer
+from dTBack.celery import resizeImage
+
+import dTBack
+from blogs.models import Blog, Post, get_type_attachment_by_name
+from blogs.permissions import PostPermission, MediaPermission
+from blogs.serializers import PostsListSerializer, PostSerializer, BlogSerializer, PostsRetrieveSerializer, \
+    MediaSerializer
 
 
 class BlogViewSet(ReadOnlyModelViewSet):
@@ -58,6 +65,44 @@ class PostViewSet(ModelViewSet):
 
     def perform_update(self, serializer):
         serializer.save()
+
+
+class MediaViewSet(GenericViewSet, mixins.UpdateModelMixin):
+    parser_classes = (FileUploadParser, )
+    serializer_class = MediaSerializer
+    permission_classes = (MediaPermission,)
+    queryset = Post.objects.select_related("blog")
+    filter_backends = (SearchFilter, OrderingFilter)
+
+
+    def perform_update(self, serializer):
+
+        obj = self.get_object()
+        oldFile = obj.attachment
+        obj.attachment = serializer.initial_data.get('file')
+        obj.save()
+
+        o = Post.objects.select_related("blog").filter(pk=obj.pk)[0]
+
+        fromImage = os.path.join(dTBack.settings.MEDIA_ROOT, o.attachment.name)
+        file_type = get_type_attachment_by_name(fromImage)
+
+        if file_type == o.NONE:
+            o.attachment = oldFile
+            o.save()
+            return
+
+        o.attachment_type = file_type
+        o.save()
+
+        if file_type == o.IMAGE:
+            resizeImage.delay(o.attachment.name, 400)
+
+
+
+
+
+
 
 
 

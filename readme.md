@@ -151,17 +151,20 @@ Se ha modificado la API para poder subir ficheros. Se impide que se informe el a
  **date_pub** | body | Fecha y hora de publicación | Si | string (date 'YYYY-MM-DDTHH:MM:SSZ')
  
  
-### POST /api/1.0/media/{id_post}
+### PUT /api/1.0/media/{id_post}
 
-**Requisito**: _"...se desea habilitar la posibilidad de subir imágenes a través de un endpoint del API y que, automáticamente el sistema se encargue de generar las versiones responsive de las imágenes así como un thumbnail de la imagen como tamaño máximo."_
+**Requisito**: _"...se desea habilitar la posibilidad de subir imágenes a través de un endpoint del API y que, automáticamente el sistema se encargue de generar las versiones responsive de las imágenes así como un thumbnail de la imagen como tamaño máximo. Sólo podrá hacerlo el dueño del post"_
 
 ### Parámetros
 
  *Parámetro* | *En* | *Descripción* | *Obligatorio* | *Schema* 
  :------ | :---------- | :----------- | :----------- | :------ 
+ **Content-Disposition** | Header | Indica que se va a subir un fichero | Si | attachment; filename=...
  **file** | body | Fichero de los tipos indicados más arriga | Si | File
  **id_post** | url | Identificador del post. | Si | number
  
+El nombre con el que se guardará el documento en el servidor será el que se le indique en Content-Disposition. El campo file del body de la petición sólo contiene la información binaria del fichero, no su nombre.
+
 
 ### GET /api/1.0/posts/{id}
 
