@@ -196,3 +196,11 @@ UPLOAD_FILE_TYPES = {
 }
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
+
+WEB_RESPONSIVE_DIMENSIONS = {
+    '400w': 400,
+    '590w': 590,
+    '800w': 800,
+    '1180w': 1180,
+    '1770w':1770
+}
