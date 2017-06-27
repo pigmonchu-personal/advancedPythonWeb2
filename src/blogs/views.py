@@ -47,7 +47,8 @@ def posts_list(request):
     posts = Post.objects.select_related("blog", "blog__owner","blog__owner__profile",).filter(date_pub__lte=datetime.datetime.now()).order_by("-date_pub")
 
     context = {
-        'posts': posts
+        'posts': posts,
+        'responsiveness': settings.WEB_RESPONSIVE,
     }
 
     return render(request, 'blogs/posts_list.html', context)

@@ -1,4 +1,5 @@
 import datetime
+import os
 
 import magic
 from django.contrib.auth.models import User
@@ -56,10 +57,18 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)  # automáticamente añada la fecha de creación
     modified_at = models.DateTimeField(auto_now=True)  # automáticamente actualiza la fecha al guardar
 
+
     def __str__(self):
         return self.blog.name + ": " + self.blog.owner.username + " - " + self.title
 
+    def get_filename(self):
+        filename, file_extension = os.path.splitext(self.attachment.name)
+        return filename
 
+
+    def get_filextension(self):
+        filename, file_extension = os.path.splitext(self.attachment.name)
+        return file_extension
 
 
 def get_type_attachment_by_file(file):

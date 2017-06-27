@@ -43,10 +43,8 @@ def resizeImage(source, width):
         return
 
     theImage = Image.open(fromImage)
-    for key in settings.WEB_RESPONSIVE_DIMENSIONS.keys():
-        newImage = resizeimage.resize_width(theImage, settings.WEB_RESPONSIVE_DIMENSIONS.get(key))
-        newFilename = filename + "-" + key + file_extension
+    for width_image in settings.WEB_RESPONSIVE.get("dimensions"):
+        newImage = resizeimage.resize_width(theImage, width_image)
+        newFilename = filename + ("-%d" % width_image) + file_extension
         newImage.save(os.path.join(toPath, newFilename))
 
-#    theImage = resizeimage.resize_width(theImage, width)
-#    theImage.save(os.path.join(toPath, source))

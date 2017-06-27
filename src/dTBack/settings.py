@@ -181,7 +181,7 @@ REST_FRAMEWORK = {
 #TODO: Duda -> al hacer el upload y luego devolver la información vía api me enlaza a este fichero ¿es conveniente o es mejor crear el thumbnail en static y devolverlo desde ahí?
 
 STATIC_APP = 'ui'
-STATIC_URL = '/static/'
+STATIC_URL = '/ui/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, STATIC_APP, 'static')
 
 # MEDIA ROOT -> Esto es para la subida de medios. La idea es servir de repositorio de medios de nuestro modelo
@@ -200,10 +200,7 @@ UPLOAD_FILE_TYPES = {
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 
-WEB_RESPONSIVE_DIMENSIONS = {
-    '400w': 400,
-    '590w': 590,
-    '800w': 800,
-    '1180w': 1180,
-    '1770w':1770
+WEB_RESPONSIVE = {
+    'mode': 'w',
+    'dimensions': [400, 590, 800, 1180, 1770]
 }
