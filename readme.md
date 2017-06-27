@@ -1,13 +1,23 @@
 # Puesta en marcha del sistema
 
-## Nota 1. - 
+## Creación de al menos una categoría
 
 Debe crearse al menos una categoría para los posts con el administrador de django. En otro caso será imposible dar de alta un post, puesto que el campo categoría es obligado.
 
-~~La validación de tipos de ficheros para subir implica utilizar la librería `python-magic` y esta tiene ciertas dependencias en función del sistema operativo en que se instale, ver [https://github.com/ahupp/python-magic#dependencies](https://github.com/ahupp/python-magic#dependencies). En mi caso he instalado libmagic con homebrew~~
-El tipo de fichero se determina ahora por el contenido del mismo y no por la url de la que viene (sólo se admite hacer upload de imágenes). El párrafo tachado no aplica.
+La validación de tipos de ficheros para subir implica utilizar la librería `python-magic` y esta tiene ciertas dependencias en función del sistema operativo en que se instale, ver [https://github.com/ahupp/python-magic#dependencies](https://github.com/ahupp/python-magic#dependencies). En mi caso he instalado libmagic con homebrew
+
+## Gestión de colas y worker
+
+Como worker la aplicación utiliza `celery`. Para arrancarlo ejecutar desde una terminal.
+
+```
+
+celery -A dTBackend worker
 
 
+```
+
+Previamente ha de haberse levantado un gestor de colas. En mi caso he usado `Rabbit MQ`. **No figura en el repositorio**.
 
 
 ## Tipos de attachment admitidos para un post
@@ -31,9 +41,9 @@ La relación de extensiones con formato de fichero la he tomado de [https://www.
 
 
 
-# Notas para el profesor
+# Notas para el profesor - 
 
-## Internacionalización
+## Internacionalización - [Backend avanzado]
 Se ha internacionalizado la web de forma que puede utilizar ingles y español. Por defecto es inglés.
 
 La traducción de las etiquetas de los campos de los formularios se ha complicado un poco. Si la hago directamente al definir el formulario queda siempre en inglés, ya que la definición de los formularios se realiza al lanzar la aplicación y no existe un request con una cabecera `Accept-Language` para extraer el idioma de la petición.
@@ -42,7 +52,16 @@ He creado una clase `TranslateView(View)` en la aplicación `ui`. En ella he def
 
 **El problema viene** a la hora de generar los ficheros .po, las claves hay que ponerlas a mano o forzando una primera traducción al declarar el objeto labels de cada vista. Además quedan comentadas en cada nueva generación de cadenas a traducir. Es incómodo pero no tengo tiempo, por ahora, para desarrollar una solución más elegante.
 
-## Notas a los requisitos
+## API subida imágenes y procesado responsive
+
+Lo he hecho de manera sencilla y sin microservicios. Usando Rabbit MQ y Celery. La idea es hacerlo así.
+
+1.	Subir un post en el que se indica el texto alternativo de la imagen (no necesario en el caso de un video). Si todo va bien se obtiene el id del post
+2. Subir via [nueva api](#media-upload) el fichero. Importante informar los parámetros correctamente en la url, el body (binary) y la cabecera. 
+
+[Soy capaz de hacerlo vía postman... estoy pendiente de hacerlo vía javascript.]
+
+## Notas a los requisitos - [Fundamentos de Python]
 
 1. Al hacer signup, el usuario no queda logueado al sistema porque creo que es mejor  montar el ciclo de validación de correo. No lo construyo, pero obligo al usuario a loguearse manualmente al sistema como recordatorio/simulación de que queda pendiente la validación del correo.
 2. Al comenzar me pareció una buena idea montar el sistema de forma que un usuario pueda tener más de un blog (si yo fuera un usuario me gustaría tener dos distintos). Me ha ido dando problemas pero los he ido solventado. Sin embargo he tenido que tomar ciertas decisiones que no sé si van en contra de los requisitos.
@@ -151,7 +170,7 @@ Se ha modificado la API para poder subir ficheros. Se impide que se informe el a
  **date_pub** | body | Fecha y hora de publicación | Si | string (date 'YYYY-MM-DDTHH:MM:SSZ')
  
  
-### PUT /api/1.0/media/{id_post}
+<a name="media-upload"> ### PUT /api/1.0/media/{id_post}</a>
 
 **Requisito**: _"...se desea habilitar la posibilidad de subir imágenes a través de un endpoint del API y que, automáticamente el sistema se encargue de generar las versiones responsive de las imágenes así como un thumbnail de la imagen como tamaño máximo. Sólo podrá hacerlo el dueño del post"_
 

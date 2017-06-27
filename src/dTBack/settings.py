@@ -177,11 +177,14 @@ REST_FRAMEWORK = {
 
 #APPEND_SLASH = False
 
+# STATIC -> esto es para servir ficheros estaticos, incluidos los medios. Aquí será donde los dejaremos responsive y para acceso web.
+#TODO: Duda -> al hacer el upload y luego devolver la información vía api me enlaza a este fichero ¿es conveniente o es mejor crear el thumbnail en static y devolverlo desde ahí?
+
 STATIC_APP = 'ui'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, STATIC_APP, 'static')
 
-# MEDIA ROOT
+# MEDIA ROOT -> Esto es para la subida de medios. La idea es servir de repositorio de medios de nuestro modelo
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 

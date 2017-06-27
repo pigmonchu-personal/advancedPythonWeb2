@@ -17,6 +17,13 @@
             <article class="article" data-id="{{ post.id }}">
             {% if post.attachment and post.attachment_type == "I" %}
                 <img class="ilustration" src="{{ MEDIA_URL }}{{ post.attachment }}" alt="{{ post.attachment_description }}">
+            		srcset="
+                        ./dist/images/article01-400px.jpg 400w,
+                        ./dist/images/article01-590px.jpg 590w,
+                        ./dist/images/article01-800px.jpg 800w,
+                        ./dist/images/article01-1180px.jpg 1180w,
+                        ./dist/images/article01-1770px.jpg 1770w
+                    ">
             {% elif post.attachment and post.attachment_type == "V" %}
                 <video controls class="ilustration">
                     <source src="{{ MEDIA_URL }}{{ post.attachment }}" type="video/mp4" />

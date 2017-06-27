@@ -77,6 +77,8 @@ class MediaViewSet(GenericViewSet, mixins.UpdateModelMixin):
 
     def perform_update(self, serializer):
 
+        #TODO: control de http-status y mensajes. Devuelve un 200 en todo caso a no ser que se produzca un error 500.
+
         obj = self.get_object()
         oldFile = obj.attachment
         obj.attachment = serializer.initial_data.get('file')
@@ -102,7 +104,7 @@ class MediaViewSet(GenericViewSet, mixins.UpdateModelMixin):
         if file_type == o.IMAGE:
 
 #TODO gestionar el resizing to responsiveness directamente también desde el modelo -> migrar la semilla de resize desde el celery a models.Post
-            resizeImage.delay(o.attachment.name, 400)
+            resizeImage(o.attachment.name, 400)
 
 
 

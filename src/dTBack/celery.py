@@ -37,9 +37,16 @@ def resizeImage(source, width):
     fromImage = os.path.join(settings.MEDIA_ROOT, source)
     toPath = os.path.join(settings.STATIC_ROOT, 'images', 'posts')
 
+    filename, file_extension = os.path.splitext(source)
+
     if not os.path.exists(fromImage) or not os.path.exists(toPath):
         return
 
     theImage = Image.open(fromImage)
-    theImage = resizeimage.resize_width(theImage, width)
-    theImage.save(os.path.join(toPath, source))
+    for key in settings.WEB_RESPONSIVE_DIMENSIONS.keys():
+        newImage = resizeimage.resize_width(theImage, settings.WEB_RESPONSIVE_DIMENSIONS.get(key))
+        newFilename = filename + "-" + key + file_extension
+        newImage.save(os.path.join(toPath, newFilename))
+
+#    theImage = resizeimage.resize_width(theImage, width)
+#    theImage.save(os.path.join(toPath, source))
