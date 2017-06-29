@@ -2,12 +2,16 @@ import datetime
 import os
 
 import magic
+from celery import shared_task
 from django.contrib.auth.models import User
 from django.core.files import File
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
 
 from dTBack import settings
+from PIL import Image
+from celery import shared_task
+from resizeimage import resizeimage
 
 
 class FILE(File):
@@ -81,37 +85,53 @@ class Post(models.Model):
     def get_attachment_type(self):
 
         if isinstance(self.attachment.file, InMemoryUploadedFile):
-            content_type = self.attachment.file.content_type
-        elif isinstance(self.attachment, File):
-            content_type = magic.from_file(self.attachment.file.name, mime=True)
-        else:
-            return Post.NONE
+            name, extension = os.path.splitext(self.attachment.file.name)
 
-        try:
-            if content_type in settings.UPLOAD_FILE_TYPES.get("images"):
+            if extension in settings.UPLOAD_FILE_EXTENSIONS.get("images"):
                 return Post.IMAGE
-            elif content_type in settings.UPLOAD_FILE_TYPES.get("videos"):
+            elif extension in settings.UPLOAD_FILE_EXTENSIONS.get("videos"):
                 return Post.VIDEO
             else:
                 return Post.NONE
-        except:
-            return Post.NONE
 
-def get_type_attachment_by_file(file):
-    return get_type_attachment(file.content_type)
+        elif isinstance(self.attachment, File):
+            content_type = magic.from_file(self.attachment.file.name, mime=True)
 
-
-def get_type_attachment_by_name(file):
-    return get_type_attachment(magic.from_file(file, mime=True))
-
-def get_type_attachment(content_type):
-    try:
-        if content_type in settings.UPLOAD_FILE_TYPES.get("images"):
-            return Post.IMAGE
-        elif content_type in settings.UPLOAD_FILE_TYPES.get("videos"):
-            return Post.VIDEO
+            try:
+                if content_type in settings.UPLOAD_FILE_TYPES.get("images"):
+                    return Post.IMAGE
+                elif content_type in settings.UPLOAD_FILE_TYPES.get("videos"):
+                    return Post.VIDEO
+                else:
+                    return Post.NONE
+            except:
+                return Post.NONE
         else:
             return Post.NONE
-    except:
-        return Post.NONE
+
+    @shared_task
+    def resizeImage(id):
+
+        post = Post.objects.get(pk=id)
+
+        if post.attachment_type != post.IMAGE:
+            return
+
+        source = post.attachment.name
+
+        print('Resizing {0}'.format(source))
+        fromImage = os.path.join(settings.MEDIA_ROOT, source)
+        toPath = os.path.join(settings.STATIC_ROOT, 'images', 'posts')
+
+        filename, file_extension = os.path.splitext(source)
+
+        if not os.path.exists(fromImage) or not os.path.exists(toPath):
+            return
+
+        theImage = Image.open(fromImage)
+        for width_image in settings.WEB_RESPONSIVE.get("dimensions"):
+            newImage = resizeimage.resize_width(theImage, width_image)
+            newFilename = filename + ("-%d" % width_image) + file_extension
+            newImage.save(os.path.join(toPath, newFilename))
+            print('new file: {0}'.format(newFilename))
 

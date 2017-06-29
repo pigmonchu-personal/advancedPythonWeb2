@@ -7,9 +7,8 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 
 from blogs.forms import PostForm, BlogForm
-from blogs.models import Blog, Post, get_type_attachment_by_file
+from blogs.models import Blog, Post
 from dTBack import settings
-from dTBack.celery import resizeImage
 from ui.views import TranslateView
 
 
@@ -61,7 +60,8 @@ def posts_username_list(request, username):
         posts = posts.filter(date_pub__lte=datetime.datetime.now())
 
     context = {
-        'posts': posts
+        'posts': posts,
+        'responsiveness': settings.WEB_RESPONSIVE,
     }
 
     return render(request, 'blogs/posts_username_list.html', context)
@@ -78,7 +78,7 @@ def post_complete(request, username, post_id):
             context = {
                 'post': post,
                 'categories': post.categories.all(),
-                'media_path' : settings.MEDIA_URL
+                'responsiveness': settings.WEB_RESPONSIVE,
             }
 
             return render(request, 'blogs/post.html', context)
@@ -120,15 +120,15 @@ class NewPostView(TranslateView):
                     form.instance.attachment = None
                 
             form.save()
-            if there_Is_A_File and form.instance.attachment_type == Post.IMAGE:
-                resizeImage.delay(form.instance.attachment.name, 400)
-
-            form = PostForm(user=request.user)
+            if there_Is_A_File:
+                form.instance.resizeImage.delay(form.instance.id)
 
             if there_Is_A_File and form.instance.attachment_type == Post.NONE:
                 message = _("Se ha creado correctamente el post sin media file. Ver tipos de fichero admitidos.")
             else:
                 message = _("Se ha creado correctamente el post")
+
+            form = PostForm(user=request.user)
 
         context = {
             "form": form,

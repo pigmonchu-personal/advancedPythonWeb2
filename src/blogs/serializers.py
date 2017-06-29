@@ -1,6 +1,6 @@
 from django.urls import reverse
-from django.utils import timezone
 from rest_framework import serializers
+from django.utils.translation import ugettext as _
 
 from blogs.models import Blog, Post
 
@@ -38,11 +38,15 @@ class MediaSerializer(serializers.ModelSerializer):
 
         model = Post
         fields = ("attachment",)
-        extra_kwargs = {'attachment': {'write_only': True}}
+#        extra_kwargs = {'attachment': {'write_only': True}}
 
-    def validate_attachment(self, value):
+    def validate_attachment(self):
 
-        return value is not None
+        post = Post()
+        post.attachment = self.initial_data.get("file")
+
+        if post.get_attachment_type() == post.NONE:
+            raise serializers.ValidationError(_("Fichero de tipo incorrecto"))
 
 
 class PostSerializer(serializers.ModelSerializer):

@@ -198,6 +198,11 @@ UPLOAD_FILE_TYPES = {
     'videos': ['video/mp4', 'video/webm', 'video/ogg', 'application/ogg']
 }
 
+UPLOAD_FILE_EXTENSIONS = {
+    'images': ['.jpeg', '.jpg', '.gif', '.png', '.apng', '.svg', '.bmp'],
+    'videos': ['.mp4', '.m4p', '.m4v', '.webm', '.ogv', '.ogg']
+}
+
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 
 WEB_RESPONSIVE = {

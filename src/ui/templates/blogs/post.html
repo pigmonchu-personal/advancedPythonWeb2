@@ -23,7 +23,14 @@
         </header>
     {% if post.attachment %}
         {% if post.attachment_type == "I" %}
-        <img class="ilustration" src="{{ MEDIA_URL }}{{ post.attachment }}" alt="{{ post.attachment_description }} ">
+        <img class="ilustration" src="{{ MEDIA_URL }}{{ post.attachment }}" alt="{{ post.attachment_description }}"
+            srcset="
+            {% for media_width in responsiveness.dimensions %}
+                {% static 'images/posts/' %}{{post.get_filename}}-{{ media_width }}{{ post.get_filextension }}  {{ media_width}}{{ responsiveness.mode }},
+
+            {% endfor %}
+            ">
+
 <!-- srcset="./dist/images/article01-400px.jpg 400w, ./dist/images/article01-590px.jpg 590w, ./dist/images/article01-800px.jpg 800w, ./dist/images/article01-1180px.jpg 1180w, ./dist/images/article01-1770px.jpg 1770w"-->
 
         {% elif post.attachment_type == "V" %}

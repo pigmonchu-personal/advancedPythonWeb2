@@ -2,15 +2,14 @@ import datetime
 import os
 
 from django.db.models import Q
+from django.utils.translation import ugettext as _
 from rest_framework import mixins
+from rest_framework import serializers
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.parsers import FileUploadParser
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet, GenericViewSet
 
-from dTBack.celery import resizeImage
-
-import dTBack
-from blogs.models import Blog, Post, get_type_attachment_by_name
+from blogs.models import Blog, Post
 from blogs.permissions import PostPermission, MediaPermission
 from blogs.serializers import PostsListSerializer, PostSerializer, BlogSerializer, PostsRetrieveSerializer, \
     MediaSerializer
@@ -77,28 +76,33 @@ class MediaViewSet(GenericViewSet, mixins.UpdateModelMixin):
 
     def perform_update(self, serializer):
 
-        #TODO: control de http-status y mensajes. Devuelve un 200 en todo caso a no ser que se produzca un error 500.
+    #Al final hago dos validaciones. Antes de subir por extensión. Si aún así me la quieren colar, se hace una validación por fichero una vez subido. Si no es lo que se espera, se borra.
+    #El consumo de ancho de banda del cliente solo se da si intenta engañar o si sube el fichero correcto
+
+        serializer.validate_attachment()
+
+#TODO Crear un comando de python que valide en media si los ficheros están asociados a algún post. Si no es así, borrarlos en media y en static. Programarlo con un CRON cada x horas (en función del movimiento de la plataforma)
+
 
         obj = self.get_object()
         oldFile = obj.attachment
         obj.attachment = serializer.initial_data.get('file')
+
         obj.save()
 
         o = Post.objects.select_related("blog").filter(pk=obj.pk)[0]
         file_type = o.get_attachment_type()
 
         if file_type == o.NONE:
+            os.remove(o.attachment.file.name)
             o.attachment = oldFile
             o.save()
-            return
+            raise serializers.ValidationError(_("Fichero de tipo incorrecto"))
 
         o.attachment_type = file_type
         o.save()
+        o.resizeImage.delay(o.id)
 
-        if file_type == o.IMAGE:
-
-#TODO gestionar el resizing to responsiveness directamente también desde el modelo -> migrar la semilla de resize desde el celery a models.Post
-            resizeImage(o.attachment.name, 400)
 
 
 
