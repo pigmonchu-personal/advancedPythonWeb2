@@ -16,10 +16,10 @@
     {% for post in posts %}
         <article class="article" data-id="{{ post.id }}">
         {% if post.attachment and post.attachment_type == "I" %}
-            <img class="ilustration" src="{{ post.attachment }}" alt="{% trans 'imagen del post'%}">
+            <img class="ilustration" src="{{ MEDIA_URL }}{{ post.attachment }}" alt="{{ post.attachment_description }}">
         {% elif post.attachment and post.attachment_type == "V" %}
             <video controls class="ilustration">
-                <source src="{{ post.attachment }}" type="video/mp4" />
+                <source src="{{ MEDIA_URL }}{{ post.attachment }}" type="video/mp4" />
             </video>
         {% else %}
             <img class="ilustration empty" src="{% static '/images/transparent.png' %}" alt="{% trans 'post sin imagen' %}">
@@ -38,7 +38,7 @@
                 </header>
                 <h1 class="title">{{ post.title }} <span class="smallText">({{ post.blog.name }})</span></h1>
                 <p class="intro">{{ post.abstract }}</p>
-                <a href="./{{ post.id }}" class="sigue">{% trans 'Seguir leyendo'%}...</a>
+                <a href="./{{ post.blog.owner.username }}/{{ post.id }}" class="sigue">{% trans 'Seguir leyendo'%}...</a>
             </div>
         </article>
     {% endfor %}

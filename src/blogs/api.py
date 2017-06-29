@@ -1,12 +1,18 @@
 import datetime
+import os
 
 from django.db.models import Q
+from django.utils.translation import ugettext as _
+from rest_framework import mixins
+from rest_framework import serializers
 from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet, ModelViewSet
+from rest_framework.parsers import FileUploadParser
+from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet, GenericViewSet
 
-from blogs.models import Blog, Post, get_type_attachment
-from blogs.permissions import PostPermission
-from blogs.serializers import PostsListSerializer, PostSerializer, BlogSerializer
+from blogs.models import Blog, Post
+from blogs.permissions import PostPermission, MediaPermission
+from blogs.serializers import PostsListSerializer, PostSerializer, BlogSerializer, PostsRetrieveSerializer, \
+    MediaSerializer
 
 
 class BlogViewSet(ReadOnlyModelViewSet):
@@ -28,7 +34,13 @@ class PostViewSet(ModelViewSet):
     permission_classes = (PostPermission,)
 
     def get_serializer_class(self):
-        return PostsListSerializer if self.action == "list" else PostSerializer
+
+        if self.action == "list":
+            return PostsListSerializer
+        elif self.action == "retrieve":
+            return PostsRetrieveSerializer
+        else:
+            return PostSerializer
 
     def get_queryset(self):
         self.serializer_class = PostsListSerializer
@@ -48,16 +60,56 @@ class PostViewSet(ModelViewSet):
         return queryset
 
     def perform_create(self, serializer):
-        self.save_with_attachment_type(serializer)
+        serializer.save()
 
     def perform_update(self, serializer):
-        self.save_with_attachment_type(serializer)
-
-    def save_with_attachment_type(self, serializer):
-        if serializer.validated_data.get("attachment"):
-            serializer.validated_data["attachment_type"] = get_type_attachment(serializer.validated_data.get("attachment"))
-
         serializer.save()
+
+
+class MediaViewSet(GenericViewSet, mixins.UpdateModelMixin):
+    parser_classes = (FileUploadParser, )
+    serializer_class = MediaSerializer
+    permission_classes = (MediaPermission,)
+    queryset = Post.objects.select_related("blog")
+    filter_backends = (SearchFilter, OrderingFilter)
+
+
+    def perform_update(self, serializer):
+
+    #Al final hago dos validaciones. Antes de subir por extensión. Si aún así me la quieren colar, se hace una validación por fichero una vez subido. Si no es lo que se espera, se borra.
+    #El consumo de ancho de banda del cliente solo se da si intenta engañar o si sube el fichero correcto
+
+        serializer.validate_attachment()
+
+#TODO Crear un comando de python que valide en media si los ficheros están asociados a algún post. Si no es así, borrarlos en media y en static. Programarlo con un CRON cada x horas (en función del movimiento de la plataforma)
+
+
+        obj = self.get_object()
+        oldFile = obj.attachment
+        obj.attachment = serializer.initial_data.get('file')
+
+        obj.save()
+
+        o = Post.objects.select_related("blog").filter(pk=obj.pk)[0]
+        file_type = o.get_attachment_type()
+
+        if file_type == o.NONE:
+            os.remove(o.attachment.file.name)
+            o.attachment = oldFile
+            o.save()
+            raise serializers.ValidationError(_("Fichero de tipo incorrecto"))
+
+        o.attachment_type = file_type
+        o.save()
+        o.resizeImage.delay(o.id)
+
+
+
+
+
+
+
+
 
 
 

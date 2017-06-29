@@ -4,12 +4,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils.datetime_safe import strftime
 from django.utils.decorators import method_decorator
-
-from blogs.forms import PostForm, BlogForm
-from blogs.models import Blog, Post, get_type_attachment
-
 from django.utils.translation import ugettext as _
 
+from blogs.forms import PostForm, BlogForm
+from blogs.models import Blog, Post
+from dTBack import settings
 from ui.views import TranslateView
 
 
@@ -47,7 +46,8 @@ def posts_list(request):
     posts = Post.objects.select_related("blog", "blog__owner","blog__owner__profile",).filter(date_pub__lte=datetime.datetime.now()).order_by("-date_pub")
 
     context = {
-        'posts': posts
+        'posts': posts,
+        'responsiveness': settings.WEB_RESPONSIVE,
     }
 
     return render(request, 'blogs/posts_list.html', context)
@@ -60,7 +60,8 @@ def posts_username_list(request, username):
         posts = posts.filter(date_pub__lte=datetime.datetime.now())
 
     context = {
-        'posts': posts
+        'posts': posts,
+        'responsiveness': settings.WEB_RESPONSIVE,
     }
 
     return render(request, 'blogs/posts_username_list.html', context)
@@ -76,7 +77,8 @@ def post_complete(request, username, post_id):
         else:
             context = {
                 'post': post,
-                'categories': post.categories.all()
+                'categories': post.categories.all(),
+                'responsiveness': settings.WEB_RESPONSIVE,
             }
 
             return render(request, 'blogs/post.html', context)
@@ -109,13 +111,24 @@ class NewPostView(TranslateView):
             if not form.instance.date_pub:
                 form.instance.date_pub = datetime.datetime.now()
 
-#            if form.instance.attachment:
-#                form.instance.attachment_type = get_type_attachment(form.instance.attachment)
+            there_Is_A_File = False
 
+            if form.instance.attachment:
+                there_Is_A_File = True
+                form.instance.attachment_type = form.instance.get_attachment_type()
+                if form.instance.attachment_type == Post.NONE:
+                    form.instance.attachment = None
+                
             form.save()
+            if there_Is_A_File:
+                form.instance.resizeImage.delay(form.instance.id)
+
+            if there_Is_A_File and form.instance.attachment_type == Post.NONE:
+                message = _("Se ha creado correctamente el post sin media file. Ver tipos de fichero admitidos.")
+            else:
+                message = _("Se ha creado correctamente el post")
 
             form = PostForm(user=request.user)
-            message = _("Se ha creado correctamente el post")
 
         context = {
             "form": form,
@@ -154,3 +167,4 @@ class NewBlogView(TranslateView):
             "message": message
         }
         return render(request, 'blogs/new_blog.html', context)
+

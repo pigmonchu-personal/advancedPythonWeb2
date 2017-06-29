@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-08 22:26+0000\n"
+"POT-Creation-Date: 2017-06-25 07:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,19 +17,25 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: blogs/forms.py:23
+#: blogs/forms.py:26
 msgid "Debe estar conectado"
 msgstr "Must be logged"
 
-#: blogs/serializers.py:43
+#: blogs/serializers.py:45
 msgid "El blog informado no pertenece al usuario"
 msgstr "Blog does not belong to the user"
 
-#: blogs/views.py:118
+#: blogs/views.py:127
+msgid ""
+"Se ha creado correctamente el post sin media file. Ver tipos de fichero "
+"admitidos."
+msgstr "Post succesfully created withou media files. See permitted file types"
+
+#: blogs/views.py:129
 msgid "Se ha creado correctamente el post"
 msgstr "Post succesfully created"
 
-#: blogs/views.py:150
+#: blogs/views.py:161
 msgid "Se ha creado correctamente el blog"
 msgstr "Blog succesfully created"
 
@@ -143,12 +149,6 @@ msgstr "Incorrect user or password"
 msgid "Error en acceso a base de datos"
 msgstr "Database access error"
 
-msgid "Nombre"
-msgstr "Name"
-
-msgid "Descripción"
-msgstr "Description"
-
 msgid "Título"
 msgstr "Title"
 
@@ -161,11 +161,20 @@ msgstr "Text"
 msgid "Media"
 msgstr "Media"
 
+msgid "Descripción"
+msgstr "Description"
+
+msgid "Descripción de Media"
+msgstr "Media Alt"
+
 msgid "Categorías"
 msgstr "Categories"
 
 msgid "Fecha de publicación"
 msgstr "Publish date"
+
+msgid "Nombre"
+msgstr "Name"
 
 msgid "Foto"
 msgstr "Photo"

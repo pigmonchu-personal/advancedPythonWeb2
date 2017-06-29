@@ -1,13 +1,26 @@
 # Puesta en marcha del sistema
 
-## Nota 1. - 
+## Creación de al menos una categoría
 
 Debe crearse al menos una categoría para los posts con el administrador de django. En otro caso será imposible dar de alta un post, puesto que el campo categoría es obligado.
 
 La validación de tipos de ficheros para subir implica utilizar la librería `python-magic` y esta tiene ciertas dependencias en función del sistema operativo en que se instale, ver [https://github.com/ahupp/python-magic#dependencies](https://github.com/ahupp/python-magic#dependencies). En mi caso he instalado libmagic con homebrew
 
+## Gestión de colas y worker
 
-## Tipos de attactment admitidos para un post
+Como worker la aplicación utiliza `celery`. Para arrancarlo ejecutar desde una terminal.
+
+```
+
+celery -A dTBackend worker
+
+
+```
+
+Previamente ha de haberse levantado un gestor de colas. En mi caso he usado `Rabbit MQ`. **No figura en el repositorio**.
+
+
+## Tipos de attachment admitidos para un post
 
 La api de upload de imágenes y videos sólo admitirá este tipo de ficheros. Se admitirán **videos** de tipo  
 
@@ -28,9 +41,9 @@ La relación de extensiones con formato de fichero la he tomado de [https://www.
 
 
 
-# Notas para el profesor
+# Notas para el profesor - 
 
-## Internacionalización
+## Internacionalización - [Backend avanzado]
 Se ha internacionalizado la web de forma que puede utilizar ingles y español. Por defecto es inglés.
 
 La traducción de las etiquetas de los campos de los formularios se ha complicado un poco. Si la hago directamente al definir el formulario queda siempre en inglés, ya que la definición de los formularios se realiza al lanzar la aplicación y no existe un request con una cabecera `Accept-Language` para extraer el idioma de la petición.
@@ -39,7 +52,16 @@ He creado una clase `TranslateView(View)` en la aplicación `ui`. En ella he def
 
 **El problema viene** a la hora de generar los ficheros .po, las claves hay que ponerlas a mano o forzando una primera traducción al declarar el objeto labels de cada vista. Además quedan comentadas en cada nueva generación de cadenas a traducir. Es incómodo pero no tengo tiempo, por ahora, para desarrollar una solución más elegante.
 
-## Notas a los requisitos
+## API subida imágenes y procesado responsive
+
+Lo he hecho de manera sencilla y sin microservicios. Usando Rabbit MQ y Celery. La idea es hacerlo así.
+
+1.	Subir un post en el que se indica el texto alternativo de la imagen (no necesario en el caso de un video). Si todo va bien se obtiene el id del post
+2. Subir via [nueva api](#media-upload) el fichero. Importante informar los parámetros correctamente en la url, el body (binary) y la cabecera. 
+
+[Soy capaz de hacerlo vía postman... estoy pendiente de hacerlo vía javascript.]
+
+## Notas a los requisitos - [Fundamentos de Python]
 
 1. Al hacer signup, el usuario no queda logueado al sistema porque creo que es mejor  montar el ciclo de validación de correo. No lo construyo, pero obligo al usuario a loguearse manualmente al sistema como recordatorio/simulación de que queda pendiente la validación del correo.
 2. Al comenzar me pareció una buena idea montar el sistema de forma que un usuario pueda tener más de un blog (si yo fuera un usuario me gustaría tener dos distintos). Me ha ido dando problemas pero los he ido solventado. Sin embargo he tenido que tomar ciertas decisiones que no sé si van en contra de los requisitos.
@@ -132,6 +154,8 @@ He creado una clase `TranslateView(View)` en la aplicación `ui`. En ella he def
 
 **Requisito**: _"Un endpoint para crear posts en el cual el usuario deberá estar autenticado. En este endpoint el post quedará publicado automáticamente en el blog del usuario autenticado."_
 
+Se ha modificado la API para poder subir ficheros. Se impide que se informe el attachment aquí, sin embargo si que se informa la descripción de la imagen (opcional)
+
 ### Parámetros
 
  *Parámetro* | *En* | *Descripción* | *Obligatorio* | *Schema* 
@@ -140,10 +164,26 @@ He creado una clase `TranslateView(View)` en la aplicación `ui`. En ella he def
  **abstract** | body | Resumen del post. | Si | string
  **body** | body | Texto del post. | Si | string
  **categories** | body | Array de identificadores de las categorías del post. | Si | string
- **attachment** | body | Url del foto o video principal del post | No | string (url)
+ ~~**attachment**~~ | ~~body~~ | ~~Url del foto o video principal del post~~ | ~~No~~ | ~~string (url)~~
+ **attachment_description** | body | Descripción de la imagen para el campo alt | No | string 
  **blog** | body | identificador del blog al que pertenece el post. | Si | number
  **date_pub** | body | Fecha y hora de publicación | Si | string (date 'YYYY-MM-DDTHH:MM:SSZ')
  
+ 
+<a name="media-upload"> ### PUT /api/1.0/media/{id_post}</a>
+
+**Requisito**: _"...se desea habilitar la posibilidad de subir imágenes a través de un endpoint del API y que, automáticamente el sistema se encargue de generar las versiones responsive de las imágenes así como un thumbnail de la imagen como tamaño máximo. Sólo podrá hacerlo el dueño del post"_
+
+### Parámetros
+
+ *Parámetro* | *En* | *Descripción* | *Obligatorio* | *Schema* 
+ :------ | :---------- | :----------- | :----------- | :------ 
+ **Content-Disposition** | Header | Indica que se va a subir un fichero | Si | attachment; filename=...
+ **file** | body | Fichero de los tipos indicados más arriga | Si | File
+ **id_post** | url | Identificador del post. | Si | number
+ 
+El nombre con el que se guardará el documento en el servidor será el que se le indique en Content-Disposition. El campo file del body de la petición sólo contiene la información binaria del fichero, no su nombre.
+
 
 ### GET /api/1.0/posts/{id}
 
@@ -156,7 +196,7 @@ He creado una clase `TranslateView(View)` en la aplicación `ui`. En ella he def
  **id** | url | Identificador del post. | Si | number
  
 
-### PUT /api/1.0/posts/
+### PUT /api/1.0/posts/{id}/
 
 **Requisito**: _"Un endpoint de actualización de un post. Sólo podrá acceder al mismo el dueño del post o un administrador."_
 
@@ -164,11 +204,13 @@ He creado una clase `TranslateView(View)` en la aplicación `ui`. En ella he def
 
  *Parámetro* | *En* | *Descripción* | *Obligatorio* | *Schema* 
  :------ | :---------- | :----------- | :----------- | :------ 
+ **id** | url | Identificador del post. | Si | number
  **title** | body | Título del post | Si | string
  **abstract** | body | Resumen del post. | Si | string
  **body** | body | Texto del post. | Si | string
  **categories** | body | Array de identificadores de las categorías del post. | Si | string
- **attachment** | body | Url del foto o video principal del post | No | string (url)
+ ~~**attachment**~~ | ~~body~~ | ~~Url del foto o video principal del post~~ | ~~No~~ | ~~string (url)~~
+ **attachment_description** | body | Descripción de la imagen para el campo alt | No | string (url)
  **blog** | body | identificador del blog al que pertenece el post. | Si | number
  **date_pub** | body | Fecha y hora de publicación | Si | string (date 'YYYY-MM-DDTHH:MM:SSZ')
  

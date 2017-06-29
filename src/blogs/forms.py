@@ -5,6 +5,9 @@ from blogs.models import Post, Blog
 
 from django.utils.translation import ugettext as _
 
+from dTBack import settings
+
+
 class PostForm(forms.ModelForm):
 
     blog_id = forms.CharField(
@@ -24,7 +27,7 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ("title", "abstract", "body", "attachment", "categories", "date_pub")
+        fields = ("title", "abstract", "body", "attachment", "attachment_description", "categories", "date_pub")
 
 #Estas etiquetas deben traducirse, pueden crearse las claves la primera vez y luego descomentarlas cada vez que se compile
         labels = {
@@ -32,6 +35,7 @@ class PostForm(forms.ModelForm):
             "abstract": "Resumen",
             "body": "Texto",
             "attachment": "Media",
+            "attachment_description": "Descripción de Media",
             "categories": "Categorías",
             "date_pub": "Fecha de publicación"
         }
@@ -47,6 +51,7 @@ class PostForm(forms.ModelForm):
 
         self.fields["blog_id"].widget.choices = tBlog
         return
+
 
 class BlogForm(forms.ModelForm):
 

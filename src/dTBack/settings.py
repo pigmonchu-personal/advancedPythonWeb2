@@ -65,6 +65,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.template.context_processors.media',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -129,10 +130,6 @@ LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.10/howto/static-files/
-
-STATIC_URL = '/static/'
 
 # Logging
 LOGGING = {
@@ -180,14 +177,35 @@ REST_FRAMEWORK = {
 
 #APPEND_SLASH = False
 
+# STATIC -> esto es para servir ficheros estaticos, incluidos los medios. Aquí será donde los dejaremos responsive y para acceso web.
+#TODO: Duda -> al hacer el upload y luego devolver la información vía api me enlaza a este fichero ¿es conveniente o es mejor crear el thumbnail en static y devolverlo desde ahí?
 
-STATIC_URL = '/static/'
+STATIC_APP = 'ui'
+STATIC_URL = '/ui/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, STATIC_APP, 'static')
 
-# MEDIA ROOT
+# MEDIA ROOT -> Esto es para la subida de medios. La idea es servir de repositorio de medios de nuestro modelo
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/upload/media/'
+MEDIA_URL = '/media/'
 
 #Microservices URL
 MICROSERVICES = {
     "UploadMicroService": "http://127.0.0.1:8001"
+}
+
+UPLOAD_FILE_TYPES = {
+    'images': ['image/jpeg', 'image/gif', 'image/png', 'image/apng', 'image/svg', 'image/bmp'],
+    'videos': ['video/mp4', 'video/webm', 'video/ogg', 'application/ogg']
+}
+
+UPLOAD_FILE_EXTENSIONS = {
+    'images': ['.jpeg', '.jpg', '.gif', '.png', '.apng', '.svg', '.bmp'],
+    'videos': ['.mp4', '.m4p', '.m4v', '.webm', '.ogv', '.ogg']
+}
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = None
+
+WEB_RESPONSIVE = {
+    'mode': 'w',
+    'dimensions': [400, 590, 800, 1180, 1770]
 }

@@ -4,6 +4,7 @@ from django.views import View
 
 from django.utils.translation import ugettext as _
 
+
 class TranslateView(View):
 
     def translate(self, form):
@@ -20,4 +21,5 @@ class ChangeLanguage(View):
         Modificamos el LANGUAGE_SESSION_KEY para mantener el idioma seleccionado en toda la sesión
         """
         request.session[translation.LANGUAGE_SESSION_KEY] = language
+
         return redirect(request.META.get("HTTP_REFERER", "posts_list"))

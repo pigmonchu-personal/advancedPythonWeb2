@@ -1,6 +1,6 @@
 from django.urls import reverse
-from django.utils import timezone
 from rest_framework import serializers
+from django.utils.translation import ugettext as _
 
 from blogs.models import Blog, Post
 
@@ -24,14 +24,37 @@ class PostsListSerializer(serializers.ModelSerializer):
         model = Post
         fields = ("id", "title", "attachment", "abstract", "date_pub")
 
-class PostSerializer(serializers.ModelSerializer):
 
+class PostsRetrieveSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Post
+        fields = ("title", "abstract", "body", "categories", "attachment", "attachment_description", "blog", "date_pub")
+
+
+class MediaSerializer(serializers.ModelSerializer):
 
     class Meta:
 
-#TODO Revisar attachment para convertirlo en una cadena y poder subir sólo el path del recurso
         model = Post
-        fields = ("title", "abstract", "body", "categories", "blog", "date_pub")
+        fields = ("attachment",)
+#        extra_kwargs = {'attachment': {'write_only': True}}
+
+    def validate_attachment(self):
+
+        post = Post()
+        post.attachment = self.initial_data.get("file")
+
+        if post.get_attachment_type() == post.NONE:
+            raise serializers.ValidationError(_("Fichero de tipo incorrecto"))
+
+
+class PostSerializer(serializers.ModelSerializer):
+
+    class Meta:
+
+        model = Post
+        fields = ("id", "title", "abstract", "body", "categories", "attachment", "attachment_description", "blog", "date_pub")
 
     def validate_blog(self, value):
         user = self.context.get("request").user
