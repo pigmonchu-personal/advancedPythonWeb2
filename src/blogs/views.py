@@ -112,10 +112,10 @@ class NewPostView(TranslateView):
                 form.instance.date_pub = datetime.datetime.now()
 
             there_Is_A_File = False
-            
+
             if form.instance.attachment:
-                form.instance.attachment_type = get_type_attachment_by_file(form.cleaned_data["attachment"])
                 there_Is_A_File = True
+                form.instance.attachment_type = form.instance.get_attachment_type()
                 if form.instance.attachment_type == Post.NONE:
                     form.instance.attachment = None
                 

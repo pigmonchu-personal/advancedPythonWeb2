@@ -84,14 +84,8 @@ class MediaViewSet(GenericViewSet, mixins.UpdateModelMixin):
         obj.attachment = serializer.initial_data.get('file')
         obj.save()
 
- #TODO incluir la funcionalidad get_type_attachment en el modelo (así el attachment ya lo tengo y me libro de accesos)
-
         o = Post.objects.select_related("blog").filter(pk=obj.pk)[0]
-
-
-
-        fromImage = os.path.join(dTBack.settings.MEDIA_ROOT, o.attachment.name)
-        file_type = get_type_attachment_by_name(fromImage)
+        file_type = o.get_attachment_type()
 
         if file_type == o.NONE:
             o.attachment = oldFile

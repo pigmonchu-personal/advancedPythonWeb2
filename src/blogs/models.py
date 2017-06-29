@@ -3,9 +3,15 @@ import os
 
 import magic
 from django.contrib.auth.models import User
+from django.core.files import File
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
 
 from dTBack import settings
+
+
+class FILE(File):
+    pass
 
 
 class Profile(models.Model):
@@ -44,6 +50,7 @@ class Post(models.Model):
         (NONE, "None")
     )
 
+
     title = models.CharField(max_length=150)
     abstract = models.CharField(max_length=4000)
     body = models.TextField()
@@ -70,6 +77,25 @@ class Post(models.Model):
         filename, file_extension = os.path.splitext(self.attachment.name)
         return file_extension
 
+
+    def get_attachment_type(self):
+
+        if isinstance(self.attachment.file, InMemoryUploadedFile):
+            content_type = self.attachment.file.content_type
+        elif isinstance(self.attachment, File):
+            content_type = magic.from_file(self.attachment.file.name, mime=True)
+        else:
+            return Post.NONE
+
+        try:
+            if content_type in settings.UPLOAD_FILE_TYPES.get("images"):
+                return Post.IMAGE
+            elif content_type in settings.UPLOAD_FILE_TYPES.get("videos"):
+                return Post.VIDEO
+            else:
+                return Post.NONE
+        except:
+            return Post.NONE
 
 def get_type_attachment_by_file(file):
     return get_type_attachment(file.content_type)
